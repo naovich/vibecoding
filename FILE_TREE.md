@@ -62,6 +62,7 @@ vibecoding/
 ├── postcss.config.js
 ├── README.md
 ├── tailwind.config.js
+├── THEME.md
 ├── tsconfig.json
 ├── tsconfig.node.json
 ├── vite.config.ts
