@@ -8,9 +8,6 @@
 
 ```
 vibecoding/
-├── .github/
-│   └── appmod/
-│       └── appcat/
 ├── .husky/
 │   ├── _/
 │   │   ├── .gitignore
@@ -33,6 +30,8 @@ vibecoding/
 │   ├── commit-msg
 │   ├── pre-commit
 │   └── pre-push
+├── docs/
+│   └── TAILWIND_CANONICAL_SYNTAX.md
 ├── public/
 │   └── vite.svg
 ├── scripts/
