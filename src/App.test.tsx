@@ -12,6 +12,7 @@ describe('App', () => {
     render(<App />);
     expect(screen.getByText(/TypeScript Strict Mode/i)).toBeInTheDocument();
     expect(screen.getByText(/TDD avec Vitest/i)).toBeInTheDocument();
+    expect(screen.getByText(/Tailwind CSS/i)).toBeInTheDocument();
   });
 
   it('should increment counter on button click', () => {
@@ -26,9 +27,8 @@ describe('App', () => {
   it('should have proper structure', () => {
     const { container } = render(<App />);
 
-    expect(container.querySelector('.app')).toBeInTheDocument();
-    expect(container.querySelector('.app-header')).toBeInTheDocument();
-    expect(container.querySelector('.app-main')).toBeInTheDocument();
-    expect(container.querySelector('.app-footer')).toBeInTheDocument();
+    expect(container.querySelector('header')).toBeInTheDocument();
+    expect(container.querySelector('main')).toBeInTheDocument();
+    expect(container.querySelector('footer')).toBeInTheDocument();
   });
 });

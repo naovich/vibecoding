@@ -41,7 +41,6 @@ vibecoding/
 ├── src/
 │   ├── test/
 │   │   └── setup.ts
-│   ├── App.css
 │   ├── App.test.tsx
 │   ├── App.tsx
 │   ├── index.css
@@ -57,7 +56,9 @@ vibecoding/
 ├── FILE_TREE.md
 ├── index.html
 ├── package.json
+├── postcss.config.js
 ├── README.md
+├── tailwind.config.js
 ├── tsconfig.json
 ├── tsconfig.node.json
 ├── vite.config.ts
