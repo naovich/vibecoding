@@ -11,6 +11,7 @@
 **Your Mission:** Write clean, maintainable, bug-free code that passes all automated checks.
 
 **Golden Rules:**
+
 1. ✅ **If it can be checked automatically, it WILL be blocked automatically**
 2. ✅ **Zero tolerance for `: any`** (use specific types or `unknown`)
 3. ✅ **Every function has tests** (minimum 80% coverage)
@@ -22,6 +23,7 @@
 ## 🛡️ Automated Guardrails (What Will Block You)
 
 ### Pre-Commit Hooks (~10s)
+
 These run BEFORE your commit is accepted:
 
 ```
@@ -34,6 +36,7 @@ These run BEFORE your commit is accepted:
 ```
 
 ### Commit Message Hook
+
 ```
 ❌ BLOCKS if commit message doesn't follow format
 ✅ Required format: type(scope): description
@@ -47,6 +50,7 @@ Examples:
 ```
 
 ### Pre-Push Hooks (~60s)
+
 These run BEFORE your push is accepted:
 
 ```
@@ -65,17 +69,18 @@ This project uses **strict TypeScript**. All these options are enabled:
 
 ```typescript
 // ✅ Enabled by default in this project
-strict: true
-noUnusedLocals: true
-noUnusedParameters: true
-noFallthroughCasesInSwitch: true
-noUncheckedIndexedAccess: true
-noImplicitReturns: true
+strict: true;
+noUnusedLocals: true;
+noUnusedParameters: true;
+noFallthroughCasesInSwitch: true;
+noUncheckedIndexedAccess: true;
+noImplicitReturns: true;
 ```
 
 ### 2. NO `any` - EVER
 
 ❌ **NEVER DO THIS:**
+
 ```typescript
 const data: any = fetchData();
 function process(item: any) { ... }
@@ -83,6 +88,7 @@ const result = JSON.parse(text) as any;
 ```
 
 ✅ **DO THIS INSTEAD:**
+
 ```typescript
 // Use specific types
 interface User {
@@ -111,13 +117,16 @@ const result = JSON.parse(text) as ApiResponse;
 ### 3. Explicit Return Types
 
 ❌ **Avoid:**
+
 ```typescript
-function calculateTotal(items: Item[]) {  // Implicit return type
+function calculateTotal(items: Item[]) {
+  // Implicit return type
   return items.reduce((sum, item) => sum + item.price, 0);
 }
 ```
 
 ✅ **Prefer:**
+
 ```typescript
 function calculateTotal(items: Item[]): number {
   return items.reduce((sum, item) => sum + item.price, 0);
@@ -214,10 +223,10 @@ it('should update user profile', () => {
   // Arrange - Setup test data
   const user = { id: '1', name: 'Alice' };
   const updates = { name: 'Bob' };
-  
+
   // Act - Execute the function
   const result = updateUser(user, updates);
-  
+
   // Assert - Verify the result
   expect(result.name).toBe('Bob');
   expect(result.id).toBe('1');
@@ -238,12 +247,14 @@ src/
 ### 4. What to Test
 
 ✅ **MUST test:**
+
 - All public functions/methods
 - Edge cases (empty arrays, null values, boundaries)
 - Error conditions
 - Business logic
 
 ❌ **DON'T test:**
+
 - Third-party libraries
 - Simple getters/setters with no logic
 - TypeScript type definitions
@@ -255,6 +266,7 @@ src/
 ### 1. File Size Limit: 500 Lines
 
 ❌ **God File (850 lines):**
+
 ```
 UserProfile.tsx
 ├─ Component (200 lines)
@@ -265,6 +277,7 @@ UserProfile.tsx
 ```
 
 ✅ **Split into Modules:**
+
 ```
 user-profile/
 ├── UserProfile.tsx          (100 lines) - Main component
@@ -281,20 +294,20 @@ user-profile/
 
 ```typescript
 // ✅ Files: camelCase or kebab-case
-userService.ts
-user-service.ts
+userService.ts;
+user - service.ts;
 
 // ✅ Classes: PascalCase
-class UserService { }
+class UserService {}
 
 // ✅ Functions: camelCase
-function getUserById() { }
+function getUserById() {}
 
 // ✅ Constants: UPPER_SNAKE_CASE
 const MAX_RETRY_COUNT = 3;
 
 // ✅ Interfaces/Types: PascalCase
-interface UserProfile { }
+interface UserProfile {}
 type UserId = string;
 
 // ✅ Private properties: prefix with _
@@ -359,10 +372,12 @@ const count = 0;
 let mutableCount = 0;
 
 // ❌ == or !=
-if (value == null) { }
+if (value == null) {
+}
 
 // ✅ === or !==
-if (value === null) { }
+if (value === null) {
+}
 
 // ❌ Missing braces
 if (condition) doSomething();
@@ -380,14 +395,16 @@ if (condition) {
 ### 1. Non-Null Assertions (!.)
 
 ❌ **Dangerous:**
+
 ```typescript
-const user = users.find(u => u.id === id)!; // Assumes it exists
+const user = users.find((u) => u.id === id)!; // Assumes it exists
 const name = user.name!; // Assumes name exists
 ```
 
 ✅ **Safe:**
+
 ```typescript
-const user = users.find(u => u.id === id);
+const user = users.find((u) => u.id === id);
 if (!user) {
   throw new Error(`User ${id} not found`);
 }
@@ -397,11 +414,13 @@ const name = user.name ?? 'Unknown';
 ### 2. Type Assertions (`as`)
 
 ❌ **Avoid:**
+
 ```typescript
 const data = JSON.parse(text) as User; // Unsafe assumption
 ```
 
 ✅ **Better:**
+
 ```typescript
 const data: unknown = JSON.parse(text);
 if (isUser(data)) {
@@ -424,6 +443,7 @@ function isUser(data: unknown): data is User {
 ### 3. Ignoring Errors
 
 ❌ **Silent failures:**
+
 ```typescript
 try {
   riskyOperation();
@@ -433,6 +453,7 @@ try {
 ```
 
 ✅ **Proper error handling:**
+
 ```typescript
 try {
   riskyOperation();
@@ -445,6 +466,7 @@ try {
 ### 4. Mutable Default Parameters
 
 ❌ **Dangerous:**
+
 ```typescript
 function addItem(item: string, list: string[] = []): string[] {
   list.push(item); // Mutates the default array!
@@ -453,6 +475,7 @@ function addItem(item: string, list: string[] = []): string[] {
 ```
 
 ✅ **Safe:**
+
 ```typescript
 function addItem(item: string, list: string[] = []): string[] {
   return [...list, item]; // Returns new array
@@ -466,13 +489,14 @@ function addItem(item: string, list: string[] = []): string[] {
 ### 1. DRY (Don't Repeat Yourself)
 
 ❌ **Repetition:**
+
 ```typescript
 function calculateTotalPrice(items: Item[]): number {
   let total = 0;
   for (const item of items) {
     total += item.price * item.quantity;
   }
-  return total * 1.20; // VAT
+  return total * 1.2; // VAT
 }
 
 function calculateTotalPriceWithDiscount(items: Item[], discount: number): number {
@@ -480,18 +504,19 @@ function calculateTotalPriceWithDiscount(items: Item[], discount: number): numbe
   for (const item of items) {
     total += item.price * item.quantity;
   }
-  return (total * 1.20) * (1 - discount);
+  return total * 1.2 * (1 - discount);
 }
 ```
 
 ✅ **DRY:**
+
 ```typescript
 function calculateSubtotal(items: Item[]): number {
   return items.reduce((sum, item) => sum + item.price * item.quantity, 0);
 }
 
 function calculateTotalPrice(items: Item[]): number {
-  return calculateSubtotal(items) * 1.20;
+  return calculateSubtotal(items) * 1.2;
 }
 
 function calculateTotalPriceWithDiscount(items: Item[], discount: number): number {
@@ -502,15 +527,16 @@ function calculateTotalPriceWithDiscount(items: Item[], discount: number): numbe
 ### 2. KISS (Keep It Simple, Stupid)
 
 ❌ **Over-engineered:**
+
 ```typescript
 class UserRepositoryFactoryBuilder {
   private config: Config;
-  
+
   withConfig(config: Config): this {
     this.config = config;
     return this;
   }
-  
+
   build(): UserRepositoryFactory {
     return new UserRepositoryFactory(this.config);
   }
@@ -518,6 +544,7 @@ class UserRepositoryFactoryBuilder {
 ```
 
 ✅ **Simple:**
+
 ```typescript
 function createUserRepository(config: Config): UserRepository {
   return new UserRepository(config);
@@ -527,27 +554,28 @@ function createUserRepository(config: Config): UserRepository {
 ### 3. SOLID Principles
 
 **Single Responsibility:**
+
 ```typescript
 // ❌ Too many responsibilities
 class UserManager {
-  createUser() { }
-  deleteUser() { }
-  sendEmail() { }      // Email responsibility
-  logActivity() { }    // Logging responsibility
+  createUser() {}
+  deleteUser() {}
+  sendEmail() {} // Email responsibility
+  logActivity() {} // Logging responsibility
 }
 
 // ✅ Single responsibility
 class UserService {
-  createUser() { }
-  deleteUser() { }
+  createUser() {}
+  deleteUser() {}
 }
 
 class EmailService {
-  sendEmail() { }
+  sendEmail() {}
 }
 
 class ActivityLogger {
-  logActivity() { }
+  logActivity() {}
 }
 ```
 
@@ -584,6 +612,7 @@ npm run lint:fix
 ### 3. Before Commit
 
 The pre-commit hook will automatically:
+
 - ✅ Run ESLint and fix issues
 - ✅ Run Prettier and format code
 - ✅ Check TypeScript types
@@ -611,6 +640,7 @@ git commit -m "feat: add feature." # Period at end
 ```
 
 **Commit Types:**
+
 - `feat` - New feature
 - `fix` - Bug fix
 - `docs` - Documentation only
@@ -625,6 +655,7 @@ git commit -m "feat: add feature." # Period at end
 ### 5. Before Push
 
 The pre-push hook will run:
+
 - ✅ Full TypeScript build
 - ✅ All tests
 - ✅ Coverage check (must be ≥ 80%)
@@ -636,6 +667,7 @@ The pre-push hook will run:
 ## 🚨 What To Do When Blocked
 
 ### "Pre-commit blocked: ESLint errors"
+
 ```bash
 # See what's wrong
 npm run lint
@@ -647,6 +679,7 @@ npm run lint:fix
 ```
 
 ### "Pre-commit blocked: `: any` detected"
+
 ```bash
 # See where
 npm run check:any
@@ -655,6 +688,7 @@ npm run check:any
 ```
 
 ### "Pre-commit blocked: File too large"
+
 ```bash
 # See which file
 npm run check:file-size
@@ -663,6 +697,7 @@ npm run check:file-size
 ```
 
 ### "Pre-push blocked: Coverage < 80%"
+
 ```bash
 # See coverage report
 npm run test:coverage
@@ -674,6 +709,7 @@ open coverage/index.html
 ```
 
 ### "Commit message blocked"
+
 ```bash
 # Check your commit message format
 # Must be: type(scope): description
@@ -688,14 +724,17 @@ git commit -m "feat: add user login feature"
 ## 📖 Additional Resources
 
 ### TypeScript
+
 - [TypeScript Handbook](https://www.typescriptlang.org/docs/)
 - [TypeScript Cheat Sheet](https://www.typescriptlang.org/cheatsheets)
 
 ### Testing
+
 - [Vitest Documentation](https://vitest.dev/)
 - [Testing Best Practices](https://github.com/goldbergyoni/javascript-testing-best-practices)
 
 ### Code Style
+
 - [Airbnb JavaScript Style Guide](https://github.com/airbnb/javascript)
 - [Clean Code JavaScript](https://github.com/ryanmcdermott/clean-code-javascript)
 

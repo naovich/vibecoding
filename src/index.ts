@@ -1,6 +1,6 @@
 /**
  * VibeCoding Template - Entry Point
- * 
+ *
  * This template demonstrates best practices for TypeScript development
  * with automated guardrails to prevent common mistakes.
  */
