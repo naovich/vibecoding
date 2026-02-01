@@ -11,9 +11,7 @@ function App(): React.JSX.Element {
       }}
     >
       <header className="text-center mb-12">
-        <h1 className="text-6xl font-extrabold mb-4 drop-shadow-[var(--shadow-glow)]">
-          🤖 VibeCoding
-        </h1>
+        <h1 className="text-6xl font-extrabold mb-4 drop-shadow-(--shadow-glow)">🤖 VibeCoding</h1>
         <p className="text-xl opacity-90 max-w-2xl">
           Template React + TypeScript avec TDD, ESLint strict et SonarJS
         </p>
