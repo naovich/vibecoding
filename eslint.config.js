@@ -51,10 +51,15 @@ export default [
       '@typescript-eslint/prefer-nullish-coalescing': 'warn',
       '@typescript-eslint/prefer-optional-chain': 'warn',
       
-      // SonarJS - Code quality rules
+      // SonarJS - Code quality rules (v3.0.6)
+      // Complexity
       'sonarjs/cognitive-complexity': ['error', 15],
+      
+      // Duplications
       'sonarjs/no-duplicate-string': 'warn',
       'sonarjs/no-identical-functions': 'error',
+      
+      // Simplification
       'sonarjs/no-collapsible-if': 'warn',
       'sonarjs/prefer-immediate-return': 'warn',
       
