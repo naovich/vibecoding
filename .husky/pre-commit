@@ -12,14 +12,10 @@ npx lint-staged
 echo "📘 Checking TypeScript types..."
 npm run type-check
 
-# 3. Check for : any usage
-echo "🚫 Checking for 'any' usage..."
-node scripts/check-no-any.js
-
-# 4. Check file size (max 500 lines)
-echo "📏 Checking file sizes..."
-node scripts/check-file-size.js
-
-# Note: Tailwind CSS syntax is now checked by ESLint plugin (in lint-staged)
+# Note: The following are now enforced by ESLint:
+# - no-explicit-any rule (replaces check-no-any.js)
+# - max-lines rule (replaces check-file-size.js)
+# - Tailwind CSS rules (replaces check-tailwind-syntax.js)
+# All checked automatically during lint-staged
 
 echo "✅ Pre-commit checks passed!"

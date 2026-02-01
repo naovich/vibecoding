@@ -27,7 +27,8 @@ export default [
         version: 'detect',
       },
       tailwindcss: {
-        entryPoint: './src/index.css',
+        config: './tailwind.config.js',
+        cssFile: './src/index.css',
       },
     },
     languageOptions: {
@@ -82,9 +83,16 @@ export default [
       // Tailwind CSS rules
       'tailwindcss/enforce-canonical-classes': 'error', // Canonical syntax (replaces custom script)
       'tailwindcss/enforce-shorthand-classes': 'warn', // Use shorthand utilities when possible
-      'tailwindcss/enforce-consistent-class-order': 'off', // Disabled: needs proper entryPoint config
+      'tailwindcss/enforce-consistent-class-order': 'warn', // Order classes consistently
       'tailwindcss/no-duplicate-classes': 'error', // Remove duplicates
-      'tailwindcss/no-unknown-classes': 'off', // Disabled: needs proper entryPoint config for custom classes
+      'tailwindcss/no-unknown-classes': 'off', // Disabled: too strict with @theme custom values
+      
+      // File quality rules (replaces check-file-size.js)
+      'max-lines': ['error', {
+        max: 500,
+        skipBlankLines: true,
+        skipComments: true,
+      }],
       
       // SonarJS - Code quality rules (v3.0.6)
       // Complexity
