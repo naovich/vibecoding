@@ -459,35 +459,34 @@ src/
 
 ```
 src/
-├── features/
-│   ├── user/
-│   │   ├── components/
-│   │   │   ├── UserProfile.tsx
-│   │   │   ├── UserSettings.tsx
-│   │   │   └── UserAvatar.tsx
-│   │   ├── hooks/
-│   │   │   └── useUser.ts
-│   │   ├── services/
-│   │   │   └── user.service.ts
-│   │   ├── types/
-│   │   │   └── user.types.ts
-│   │   ├── utils/
-│   │   │   └── user.helpers.ts
-│   │   ├── __tests__/
-│   │   │   ├── UserProfile.test.tsx
-│   │   │   └── user.service.test.ts
-│   │   └── index.ts          # Public API
-│   │
-│   ├── auth/
-│   │   ├── components/
-│   │   ├── services/
-│   │   ├── hooks/
-│   │   └── index.ts
-│   │
-│   └── posts/
-│       ├── components/
-│       ├── services/
-│       └── index.ts
+├── user/                     # Feature: User management
+│   ├── components/
+│   │   ├── UserProfile.tsx
+│   │   ├── UserSettings.tsx
+│   │   └── UserAvatar.tsx
+│   ├── hooks/
+│   │   └── useUser.ts
+│   ├── services/
+│   │   └── user.service.ts
+│   ├── types/
+│   │   └── user.types.ts
+│   ├── utils/
+│   │   └── user.helpers.ts
+│   ├── __tests__/
+│   │   ├── UserProfile.test.tsx
+│   │   └── user.service.test.ts
+│   └── index.ts              # Public API
+│
+├── auth/                     # Feature: Authentication
+│   ├── components/
+│   ├── services/
+│   ├── hooks/
+│   └── index.ts
+│
+├── posts/                    # Feature: Posts/Content
+│   ├── components/
+│   ├── services/
+│   └── index.ts
 │
 └── shared/                   # Truly shared utilities
     ├── components/           # Generic Button, Input, etc.
@@ -497,11 +496,12 @@ src/
 
 **Benefits:**
 
-- ✅ Everything for "user" feature is in `features/user/`
+- ✅ Everything for "user" feature is in `src/user/`
 - ✅ Easy to find, modify, delete entire features
 - ✅ Clear dependencies (imports from other features are visible)
 - ✅ Tests co-located with code
 - ✅ Scalable (add features without restructuring)
+- ✅ Flat structure, less nesting
 
 **Rules:**
 
@@ -514,10 +514,10 @@ src/
 
 ```typescript
 // ✅ Import from feature's public API
-import { UserProfile, useUser } from '@/features/user';
+import { UserProfile, useUser } from '@/user';
 
 // ❌ Don't import internal details
-import { UserProfile } from '@/features/user/components/UserProfile';
+import { UserProfile } from '@/user/components/UserProfile';
 ```
 
 ### 3. Naming Conventions

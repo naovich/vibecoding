@@ -184,20 +184,23 @@ src/
 
 ```
 src/
-├── features/
-│   ├── user/
-│   │   ├── components/
-│   │   ├── services/
-│   │   ├── hooks/
-│   │   ├── types/
-│   │   ├── __tests__/
-│   │   └── index.ts         # Public API
-│   │
-│   ├── posts/
-│   │   └── ...
-│   │
-│   └── auth/
-│       └── ...
+├── user/                    # Feature: User management
+│   ├── components/
+│   ├── services/
+│   ├── hooks/
+│   ├── types/
+│   ├── __tests__/
+│   └── index.ts             # Public API
+│
+├── posts/                   # Feature: Posts/Content
+│   ├── components/
+│   ├── services/
+│   └── index.ts
+│
+├── auth/                    # Feature: Authentication
+│   ├── components/
+│   ├── services/
+│   └── index.ts
 │
 └── shared/                  # Generic utilities only
     ├── components/
@@ -207,9 +210,10 @@ src/
 
 **Bénéfices :**
 
-- ✅ Tout pour "user" est dans `features/user/`
+- ✅ Tout pour "user" est dans `src/user/`
 - ✅ Facile de trouver, modifier, supprimer une feature
 - ✅ Tests co-localisés avec le code
+- ✅ Structure plate, moins de nesting
 
 ---
 
