@@ -25,17 +25,13 @@ describe('App', () => {
     expect(screen.getByText(/Compteur : 1/i)).toBeInTheDocument();
   });
 
-  it('should handle button hover effects', () => {
+  it('should have hover classes on button', () => {
     render(<App />);
     const button = screen.getByRole('button', { name: /Compteur : 0/i });
 
-    // Mouse enter
-    fireEvent.mouseEnter(button);
-    expect(button.style.transform).toBe('translateY(-4px)');
-
-    // Mouse leave
-    fireEvent.mouseLeave(button);
-    expect(button.style.transform).toBe('translateY(0)');
+    // Check that button has hover transition classes
+    expect(button.className).toContain('hover:-translate-y-1');
+    expect(button.className).toContain('transition-all');
   });
 
   it('should have proper structure', () => {
