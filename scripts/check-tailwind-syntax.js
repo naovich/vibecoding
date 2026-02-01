@@ -2,7 +2,7 @@
 
 /**
  * Check for non-canonical Tailwind CSS class syntax
- * Detects [var(--...)] patterns that should be (--...) in v4
+ * Detects [var(--...)] and class-(--...) patterns that should use shorter syntax in v4
  */
 
 import * as fs from 'node:fs';
@@ -14,9 +14,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const rootDir = path.resolve(__dirname, '..');
 
-// Pattern to detect [var(--...)] in className attributes
-const NON_CANONICAL_PATTERN = /className="[^"]*\[var\(--[^)]+\)[^\]]*\][^"]*"/g;
+// Pattern 1: [var(--...)] should be (--...)
+const VAR_BRACKETS_PATTERN = /className="[^"]*\[var\(--[^)]+\)[^\]]*\][^"]*"/g;
 const VAR_IN_BRACKETS = /\[var\(--([^)]+)\)\]/g;
+
+// Pattern 2: class-(--variable) should be class-variable (when variable is defined in @theme)
+const VAR_PARENTHESES_PATTERN = /className="[^"]*\w+-\(--[\w-]+\)[^"]*"/g;
+const VAR_IN_PARENTHESES = /(\w+)-\(--([\w-]+)\)/g;
 
 let hasErrors = false;
 
@@ -29,23 +33,41 @@ function checkFile(filePath) {
   const lines = content.split('\n');
 
   lines.forEach((line, index) => {
-    const matches = line.match(NON_CANONICAL_PATTERN);
-    if (matches) {
-      matches.forEach((match) => {
+    const lineNumber = index + 1;
+
+    // Check Pattern 1: [var(--...)]
+    const varBracketsMatches = line.match(VAR_BRACKETS_PATTERN);
+    if (varBracketsMatches) {
+      varBracketsMatches.forEach((match) => {
         const varMatches = [...match.matchAll(VAR_IN_BRACKETS)];
         varMatches.forEach(([fullMatch, varName]) => {
           hasErrors = true;
-          const lineNumber = index + 1;
           const suggestion = fullMatch.replace(/\[var\(--([^)]+)\)\]/, '(--$1)');
 
-          console.error(
-            `\n❌ ${path.relative(rootDir, filePath)}:${lineNumber}`
-          );
+          console.error(`\n❌ ${path.relative(rootDir, filePath)}:${lineNumber}`);
+          console.error(`   Non-canonical syntax: ${fullMatch}`);
+          console.error(`   Use instead:          ${suggestion}`);
+          console.error(`   \n   ${line.trim().substring(0, 100)}${line.length > 100 ? '...' : ''}`);
+        });
+      });
+    }
+
+    // Check Pattern 2: class-(--variable)
+    const varParenthesesMatches = line.match(VAR_PARENTHESES_PATTERN);
+    if (varParenthesesMatches) {
+      varParenthesesMatches.forEach((match) => {
+        const varMatches = [...match.matchAll(VAR_IN_PARENTHESES)];
+        varMatches.forEach(([fullMatch, prefix, varName]) => {
+          hasErrors = true;
+          const suggestion = `${prefix}-${varName}`;
+
+          console.error(`\n❌ ${path.relative(rootDir, filePath)}:${lineNumber}`);
           console.error(`   Non-canonical syntax: ${fullMatch}`);
           console.error(`   Use instead:          ${suggestion}`);
           console.error(
-            `   \n   ${line.trim().substring(0, 100)}${line.length > 100 ? '...' : ''}`
+            `   💡 When a custom value is defined in @theme, use the short form`
           );
+          console.error(`   \n   ${line.trim().substring(0, 100)}${line.length > 100 ? '...' : ''}`);
         });
       });
     }
@@ -74,10 +96,10 @@ async function main() {
 
   if (hasErrors) {
     console.error('\n🚫 Non-canonical Tailwind syntax detected!');
-    console.error('💡 Tailwind v4 prefers (--variable) over [var(--variable)]');
-    console.error(
-      '   This makes classes shorter and more readable.\n'
-    );
+    console.error('💡 Tailwind v4 canonical syntax rules:');
+    console.error('   • [var(--variable)] → (--variable) for arbitrary values');
+    console.error('   • class-(--variable) → class-variable for @theme values');
+    console.error('   This makes classes shorter and more readable.\n');
     process.exit(1);
   }
 
