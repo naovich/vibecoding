@@ -12,7 +12,8 @@ describe('App', () => {
     render(<App />);
     expect(screen.getByText(/TypeScript Strict Mode/i)).toBeInTheDocument();
     expect(screen.getByText(/TDD avec Vitest/i)).toBeInTheDocument();
-    expect(screen.getByText(/Tailwind CSS/i)).toBeInTheDocument();
+    expect(screen.getByText(/Tailwind CSS v4/i)).toBeInTheDocument();
+    expect(screen.getByText(/CSS Theme Variables/i)).toBeInTheDocument();
   });
 
   it('should increment counter on button click', () => {
