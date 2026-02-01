@@ -135,7 +135,67 @@ function calculateTotal(items: Item[]): number {
 
 **Why:** Makes function contracts explicit and catches return type errors early.
 
-### 4. Use Utility Types
+### 4. Function Complexity - Maximum 15
+
+❌ **Too Complex (Cognitive Complexity > 15):**
+
+```typescript
+function processOrder(order: Order): Result {
+  if (order.items.length > 0) {
+    if (order.customer.isPremium) {
+      if (order.total > 1000) {
+        if (order.shippingMethod === 'express') {
+          // ... nested logic continues
+        }
+      }
+    }
+  }
+  // Complexity: 25+ ❌
+}
+```
+
+✅ **Refactored (Complexity < 15):**
+
+```typescript
+function processOrder(order: Order): Result {
+  validateOrder(order);
+  const discount = calculateDiscount(order);
+  const shipping = calculateShipping(order);
+  return finalizeOrder(order, discount, shipping);
+}
+
+function calculateDiscount(order: Order): number {
+  if (!order.customer.isPremium) return 0;
+  if (order.total < 1000) return 0;
+  return order.total * 0.1;
+}
+```
+
+**Why:** Keep functions simple and focused. SonarQube recommends max complexity of 15. Split complex functions into smaller, testable units.
+
+### 5. Prefer `??` (Nullish Coalescing) Over `||`
+
+❌ **Avoid `||` when you care about falsy values:**
+
+```typescript
+const count = userInput || 0; // ❌ Treats 0, '', false as invalid
+const name = user.name || 'Anonymous'; // ❌ Treats '' as invalid
+```
+
+✅ **Use `??` for null/undefined only:**
+
+```typescript
+const count = userInput ?? 0; // ✅ Only replaces null/undefined
+const name = user.name ?? 'Anonymous'; // ✅ Empty string is valid
+const enabled = settings.feature ?? true; // ✅ false is valid
+```
+
+**When to use what:**
+
+- `??` - When `0`, `''`, `false` are valid values
+- `||` - When you want to treat all falsy values the same
+
+### 6. Use Utility Types
 
 ```typescript
 // Pick - Select specific properties
@@ -154,7 +214,7 @@ type RequiredUser = Required<PartialUser>;
 type UserMap = Record<string, User>;
 ```
 
-### 5. Prefer `unknown` Over `any`
+### 7. Prefer `unknown` Over `any`
 
 ```typescript
 // ✅ Good - forces type checking
@@ -175,6 +235,87 @@ function processData(data: any): void {
 ---
 
 ## 🧪 Testing Best Practices
+
+### 0. TDD - Test-Driven Development (MANDATORY)
+
+**RED → GREEN → REFACTOR**
+
+You MUST follow TDD workflow:
+
+1. **🔴 RED:** Write the test FIRST (it will fail)
+2. **🟢 GREEN:** Write minimal code to make it pass
+3. **🔵 REFACTOR:** Clean up while keeping tests green
+
+❌ **WRONG - Code first, test later:**
+
+```typescript
+// Write implementation first ❌
+export function sum(a: number, b: number): number {
+  return a + b;
+}
+
+// Then write test ❌
+it('should sum numbers', () => {
+  expect(sum(2, 3)).toBe(5);
+});
+```
+
+✅ **CORRECT - Test first:**
+
+```typescript
+// Step 1: Write test FIRST (RED) ✅
+describe('sum', () => {
+  it('should add two positive numbers', () => {
+    expect(sum(2, 3)).toBe(5);
+  });
+
+  it('should handle negative numbers', () => {
+    expect(sum(-2, 3)).toBe(1);
+  });
+
+  it('should handle zero', () => {
+    expect(sum(0, 5)).toBe(5);
+  });
+});
+
+// Step 2: Run test → it FAILS (function doesn't exist yet)
+// Step 3: Write minimal code to make it pass (GREEN) ✅
+export function sum(a: number, b: number): number {
+  return a + b;
+}
+
+// Step 4: Run test → it PASSES ✅
+// Step 5: Refactor if needed (while keeping tests green)
+```
+
+**Workflow for every feature:**
+
+```bash
+# 1. Create test file
+touch src/features/user/user.service.test.ts
+
+# 2. Write tests (they will fail)
+npm test # ❌ FAIL (expected)
+
+# 3. Write implementation
+# Edit src/features/user/user.service.ts
+
+# 4. Run tests again
+npm test # ✅ PASS (required before moving on)
+
+# 5. Only commit when tests pass
+git add .
+git commit -m "feat(user): add user creation"
+```
+
+**Benefits:**
+
+- ✅ Forces you to think about API before implementation
+- ✅ Ensures every line of code has a test
+- ✅ Prevents over-engineering (write only what's needed)
+- ✅ Catches bugs immediately
+
+**Rule:** Never write production code without a failing test first.
 
 ### 1. Test Coverage Requirements
 
@@ -290,7 +431,96 @@ user-profile/
 
 **Why:** Large files are hard to maintain, test, and understand.
 
-### 2. Naming Conventions
+### 2. Feature-Based Folder Structure (PREFERRED)
+
+**Group by feature, not by type.** Everything related to a feature should live in the same folder.
+
+❌ **BAD - Type-based (scattered):**
+
+```
+src/
+├── components/
+│   ├── UserProfile.tsx
+│   ├── UserSettings.tsx
+│   └── UserAvatar.tsx
+├── services/
+│   └── userService.ts
+├── hooks/
+│   └── useUser.ts
+├── types/
+│   └── user.ts
+└── utils/
+    └── userHelpers.ts
+```
+
+**Problem:** To understand the "user" feature, you need to jump between 5 different folders.
+
+✅ **GOOD - Feature-based (cohesive):**
+
+```
+src/
+├── features/
+│   ├── user/
+│   │   ├── components/
+│   │   │   ├── UserProfile.tsx
+│   │   │   ├── UserSettings.tsx
+│   │   │   └── UserAvatar.tsx
+│   │   ├── hooks/
+│   │   │   └── useUser.ts
+│   │   ├── services/
+│   │   │   └── user.service.ts
+│   │   ├── types/
+│   │   │   └── user.types.ts
+│   │   ├── utils/
+│   │   │   └── user.helpers.ts
+│   │   ├── __tests__/
+│   │   │   ├── UserProfile.test.tsx
+│   │   │   └── user.service.test.ts
+│   │   └── index.ts          # Public API
+│   │
+│   ├── auth/
+│   │   ├── components/
+│   │   ├── services/
+│   │   ├── hooks/
+│   │   └── index.ts
+│   │
+│   └── posts/
+│       ├── components/
+│       ├── services/
+│       └── index.ts
+│
+└── shared/                   # Truly shared utilities
+    ├── components/           # Generic Button, Input, etc.
+    ├── hooks/                # useDebounce, useLocalStorage
+    └── utils/                # formatDate, validateEmail
+```
+
+**Benefits:**
+
+- ✅ Everything for "user" feature is in `features/user/`
+- ✅ Easy to find, modify, delete entire features
+- ✅ Clear dependencies (imports from other features are visible)
+- ✅ Tests co-located with code
+- ✅ Scalable (add features without restructuring)
+
+**Rules:**
+
+1. **Keep features isolated** - Avoid cross-feature imports when possible
+2. **Use index.ts** - Export public API from each feature
+3. **Shared goes in `/shared`** - Only truly generic stuff
+4. **Co-locate tests** - Tests live with the code they test
+
+**Example import:**
+
+```typescript
+// ✅ Import from feature's public API
+import { UserProfile, useUser } from '@/features/user';
+
+// ❌ Don't import internal details
+import { UserProfile } from '@/features/user/components/UserProfile';
+```
+
+### 3. Naming Conventions
 
 ```typescript
 // ✅ Files: camelCase or kebab-case
@@ -316,7 +546,7 @@ class User {
 }
 ```
 
-### 3. Import Organization
+### 4. Import Organization
 
 ```typescript
 // ✅ Good - Organized imports
@@ -387,6 +617,84 @@ if (condition) {
   doSomething();
 }
 ```
+
+### 3. SonarJS Rules (Code Quality)
+
+This project uses **eslint-plugin-sonarjs** to enforce code quality patterns recommended by SonarQube.
+
+**Key rules enabled:**
+
+```typescript
+// ❌ Cognitive Complexity > 15
+function processOrder(order: Order): void {
+  if (order.status === 'pending') {
+    if (order.items.length > 0) {
+      for (const item of order.items) {
+        if (item.stock > 0) {
+          if (item.price > 0) {
+            // Nested logic continues...
+            // Complexity: 20+ ❌
+          }
+        }
+      }
+    }
+  }
+}
+
+// ✅ Split into smaller functions (Complexity < 15)
+function processOrder(order: Order): void {
+  validateOrder(order);
+  const validItems = filterValidItems(order.items);
+  processItems(validItems);
+}
+
+// ❌ Duplicate string literals
+const error1 = 'Invalid user input';
+const error2 = 'Invalid user input';
+const error3 = 'Invalid user input';
+
+// ✅ Use constants
+const ERROR_INVALID_INPUT = 'Invalid user input';
+const error1 = ERROR_INVALID_INPUT;
+
+// ❌ Identical functions
+function getUserName(user: User): string {
+  return user.firstName + ' ' + user.lastName;
+}
+function getAuthorName(author: Author): string {
+  return author.firstName + ' ' + author.lastName;
+}
+
+// ✅ Extract common logic
+function getFullName(person: { firstName: string; lastName: string }): string {
+  return `${person.firstName} ${person.lastName}`;
+}
+
+// ❌ Collapsible if
+if (user.isActive) {
+  if (user.hasAccess) {
+    doSomething();
+  }
+}
+
+// ✅ Combine conditions
+if (user.isActive && user.hasAccess) {
+  doSomething();
+}
+
+// ❌ Unnecessary intermediate variable
+function getTotal(items: Item[]): number {
+  const total = items.reduce((sum, item) => sum + item.price, 0);
+  return total;
+}
+
+// ✅ Return immediately
+function getTotal(items: Item[]): number {
+  return items.reduce((sum, item) => sum + item.price, 0);
+}
+```
+
+**All SonarJS rules will block your commit if violated.**
 
 ---
 

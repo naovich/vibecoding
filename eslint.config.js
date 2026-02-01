@@ -1,6 +1,7 @@
 import js from '@eslint/js';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsparser from '@typescript-eslint/parser';
+import sonarjs from 'eslint-plugin-sonarjs';
 import prettier from 'eslint-config-prettier';
 
 export default [
@@ -33,6 +34,7 @@ export default [
     },
     plugins: {
       '@typescript-eslint': tseslint,
+      'sonarjs': sonarjs,
     },
     rules: {
       // TypeScript strict rules
@@ -48,6 +50,13 @@ export default [
       '@typescript-eslint/no-non-null-assertion': 'error',
       '@typescript-eslint/prefer-nullish-coalescing': 'warn',
       '@typescript-eslint/prefer-optional-chain': 'warn',
+      
+      // SonarJS - Code quality rules
+      'sonarjs/cognitive-complexity': ['error', 15],
+      'sonarjs/no-duplicate-string': 'warn',
+      'sonarjs/no-identical-functions': 'error',
+      'sonarjs/no-collapsible-if': 'warn',
+      'sonarjs/prefer-immediate-return': 'warn',
       
       // General best practices
       'no-console': ['warn', { allow: ['warn', 'error'] }],
