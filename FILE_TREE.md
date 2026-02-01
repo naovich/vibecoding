@@ -45,7 +45,8 @@ vibecoding/
 │   ├── App.test.tsx
 │   ├── App.tsx
 │   ├── index.css
-│   └── main.tsx
+│   ├── main.tsx
+│   └── vite-env.d.ts
 ├── .gitignore
 ├── .lintstagedrc.json
 ├── .prettierignore
@@ -57,7 +58,6 @@ vibecoding/
 ├── index.html
 ├── package.json
 ├── README.md
-├── SONARQUBE.md
 ├── tsconfig.json
 ├── tsconfig.node.json
 ├── vite.config.ts
