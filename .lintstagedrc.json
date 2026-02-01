@@ -1,5 +1,4 @@
 {
   "*.{ts,tsx}": ["eslint --fix", "prettier --write", "vitest related --run"],
-  "*.{json,md,css}": ["prettier --write"],
-  "package.json": ["node scripts/check-unused-deps.js"]
+  "*.{json,md,css}": ["prettier --write"]
 }

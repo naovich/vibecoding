@@ -35,7 +35,6 @@ vibecoding/
 ├── public/
 │   └── vite.svg
 ├── scripts/
-│   ├── check-unused-deps.js
 │   ├── enforce-coverage.js
 │   └── generate-tree.js
 ├── src/
