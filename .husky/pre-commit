@@ -20,8 +20,6 @@ node scripts/check-no-any.js
 echo "📏 Checking file sizes..."
 node scripts/check-file-size.js
 
-# 5. Check Tailwind CSS canonical syntax
-echo "🎨 Checking Tailwind CSS syntax..."
-node scripts/check-tailwind-syntax.js
+# Note: Tailwind CSS syntax is now checked by ESLint plugin (in lint-staged)
 
 echo "✅ Pre-commit checks passed!"

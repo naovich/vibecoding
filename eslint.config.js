@@ -5,6 +5,7 @@ import reactPlugin from 'eslint-plugin-react';
 import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import sonarjs from 'eslint-plugin-sonarjs';
+import tailwindcss from 'eslint-plugin-better-tailwindcss';
 import prettier from 'eslint-config-prettier';
 
 export default [
@@ -24,6 +25,9 @@ export default [
     settings: {
       react: {
         version: 'detect',
+      },
+      tailwindcss: {
+        entryPoint: './src/index.css',
       },
     },
     languageOptions: {
@@ -51,6 +55,7 @@ export default [
       'react-hooks': reactHooks,
       'react-refresh': reactRefresh,
       'sonarjs': sonarjs,
+      'tailwindcss': tailwindcss,
     },
     rules: {
       // TypeScript strict rules
@@ -73,6 +78,13 @@ export default [
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
       'react-refresh/only-export-components': ['warn', { allowConstantExport: true }],
+      
+      // Tailwind CSS rules
+      'tailwindcss/enforce-canonical-classes': 'error', // Canonical syntax (replaces custom script)
+      'tailwindcss/enforce-shorthand-classes': 'warn', // Use shorthand utilities when possible
+      'tailwindcss/enforce-consistent-class-order': 'off', // Disabled: needs proper entryPoint config
+      'tailwindcss/no-duplicate-classes': 'error', // Remove duplicates
+      'tailwindcss/no-unknown-classes': 'off', // Disabled: needs proper entryPoint config for custom classes
       
       // SonarJS - Code quality rules (v3.0.6)
       // Complexity

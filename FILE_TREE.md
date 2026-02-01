@@ -37,7 +37,6 @@ vibecoding/
 ├── scripts/
 │   ├── check-file-size.js
 │   ├── check-no-any.js
-│   ├── check-tailwind-syntax.js
 │   ├── check-unused-deps.js
 │   ├── enforce-coverage.js
 │   └── generate-tree.js
