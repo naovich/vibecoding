@@ -25,6 +25,19 @@ describe('App', () => {
     expect(screen.getByText(/Compteur : 1/i)).toBeInTheDocument();
   });
 
+  it('should handle button hover effects', () => {
+    render(<App />);
+    const button = screen.getByRole('button', { name: /Compteur : 0/i });
+
+    // Mouse enter
+    fireEvent.mouseEnter(button);
+    expect(button.style.transform).toBe('translateY(-4px)');
+
+    // Mouse leave
+    fireEvent.mouseLeave(button);
+    expect(button.style.transform).toBe('translateY(0)');
+  });
+
   it('should have proper structure', () => {
     const { container } = render(<App />);
 
