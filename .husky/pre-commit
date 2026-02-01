@@ -3,6 +3,11 @@
 
 echo "🔍 Running pre-commit checks..."
 
+# 0. Generate file tree
+echo "🌳 Generating file tree..."
+npm run tree
+git add FILE_TREE.md
+
 # 1. lint-staged (lint + format staged files)
 npx lint-staged
 

@@ -23,7 +23,8 @@
     "validate:full": "npm run validate && npm run test:coverage",
     "check:any": "node scripts/check-no-any.js",
     "check:file-size": "node scripts/check-file-size.js",
-    "check:coverage": "node scripts/enforce-coverage.js"
+    "check:coverage": "node scripts/enforce-coverage.js",
+    "tree": "node scripts/generate-tree.js"
   },
   "keywords": [
     "template",
