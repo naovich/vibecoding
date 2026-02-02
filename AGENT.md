@@ -1060,6 +1060,44 @@ if (condition) {
 
 This project uses **eslint-plugin-sonarjs** to enforce code quality patterns recommended by SonarQube.
 
+**Node.js Best Practices:**
+
+```typescript
+// ❌ Use bare module names
+import fs from 'fs';
+import path from 'path';
+import url from 'url';
+
+// ✅ Use node: protocol (recommended since Node 16+)
+import fs from 'node:fs';
+import path from 'node:path';
+import url from 'node:url';
+```
+
+**Why:** The `node:` protocol makes it explicit that you're importing Node.js built-ins, not npm packages. Prevents confusion and potential security issues.
+
+**String replacement:**
+
+```typescript
+// ❌ Use replace() for global replacement (doesn't replace all occurrences)
+const text = 'hello world hello';
+const result = text.replace('hello', 'hi'); // Only replaces first occurrence
+// Result: "hi world hello" ❌
+
+// ✅ Use replaceAll() for global replacement
+const text = 'hello world hello';
+const result = text.replaceAll('hello', 'hi'); // Replaces all occurrences
+// Result: "hi world hi" ✅
+
+// ❌ Using regex with g flag (less readable)
+const result = text.replace(/hello/g, 'hi');
+
+// ✅ Use replaceAll() (clearer intent)
+const result = text.replaceAll('hello', 'hi');
+```
+
+**Why:** `replaceAll()` is more explicit about intent and safer than regex with global flag.
+
 **Key rules enabled:**
 
 ```typescript

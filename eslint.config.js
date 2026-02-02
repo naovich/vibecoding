@@ -10,6 +10,7 @@ import importPlugin from 'eslint-plugin-import';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import promisePlugin from 'eslint-plugin-promise';
 import jsdoc from 'eslint-plugin-jsdoc';
+import unicorn from 'eslint-plugin-unicorn';
 import prettier from 'eslint-config-prettier';
 
 export default [
@@ -69,6 +70,7 @@ export default [
       'simple-import-sort': simpleImportSort,
       'promise': promisePlugin,
       'jsdoc': jsdoc,
+      'unicorn': unicorn,
     },
     rules: {
       // TypeScript strict rules
@@ -170,6 +172,10 @@ export default [
       'jsdoc/require-returns-description': 'off', // Optional: return descriptions
       'jsdoc/check-alignment': 'warn', // Check JSDoc alignment
       'jsdoc/check-indentation': 'warn', // Check JSDoc indentation
+      
+      // Unicorn rules - Modern JavaScript best practices
+      'unicorn/prefer-node-protocol': 'error', // Prefer node: protocol (sonarqube:S7772)
+      'unicorn/prefer-string-replace-all': 'error', // Prefer String#replaceAll() (sonarqube:S7781)
     },
   },
   prettier,
