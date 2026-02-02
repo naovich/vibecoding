@@ -8,9 +8,6 @@
 
 ```
 vibecoding/
-├── .github/
-│   └── appmod/
-│       └── appcat/
 ├── .husky/
 │   ├── _/
 │   │   ├── .gitignore
@@ -59,6 +56,7 @@ vibecoding/
 ├── .prettierrc.json
 ├── AGENT.md
 ├── CLAUDE.md
+├── CODE_REVIEW.md
 ├── CODEBASE.md
 ├── commitlint.config.js
 ├── eslint.config.js
