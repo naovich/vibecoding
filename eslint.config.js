@@ -6,6 +6,9 @@ import reactHooks from 'eslint-plugin-react-hooks';
 import reactRefresh from 'eslint-plugin-react-refresh';
 import sonarjs from 'eslint-plugin-sonarjs';
 import tailwindcss from 'eslint-plugin-better-tailwindcss';
+import importPlugin from 'eslint-plugin-import';
+import simpleImportSort from 'eslint-plugin-simple-import-sort';
+import promisePlugin from 'eslint-plugin-promise';
 import prettier from 'eslint-config-prettier';
 
 export default [
@@ -29,6 +32,10 @@ export default [
       tailwindcss: {
         config: './tailwind.config.js',
         cssFile: './src/index.css',
+      },
+      'import/resolver': {
+        typescript: true,
+        node: true,
       },
     },
     languageOptions: {
@@ -57,6 +64,9 @@ export default [
       'react-refresh': reactRefresh,
       'sonarjs': sonarjs,
       'tailwindcss': tailwindcss,
+      'import': importPlugin,
+      'simple-import-sort': simpleImportSort,
+      'promise': promisePlugin,
     },
     rules: {
       // TypeScript strict rules
@@ -115,6 +125,27 @@ export default [
       'curly': ['error', 'all'],
       'no-eval': 'error',
       'no-implied-eval': 'error',
+      
+      // Import rules - prevent import errors and enforce best practices
+      'import/no-unresolved': 'error', // Prevent broken imports
+      'import/named': 'error', // Ensure named imports exist
+      'import/default': 'error', // Ensure default exports exist
+      'import/namespace': 'error', // Ensure imported namespaces contain dereferenced properties
+      'import/no-duplicates': 'error', // No duplicate imports
+      'import/no-cycle': 'error', // Prevent circular dependencies
+      'import/no-self-import': 'error', // Prevent importing itself
+      
+      // Simple import sort - auto-sort imports (auto-fixable)
+      'simple-import-sort/imports': 'error',
+      'simple-import-sort/exports': 'error',
+      
+      // Promise rules - async/await best practices
+      'promise/always-return': 'error', // Ensure promises always return
+      'promise/catch-or-return': 'error', // Ensure promises have .catch() or return
+      'promise/no-nesting': 'warn', // Avoid nested promises (use async/await)
+      'promise/no-return-wrap': 'error', // Avoid wrapping values in Promise.resolve/reject unnecessarily
+      'promise/param-names': 'error', // Enforce standard parameter names (resolve, reject)
+      'promise/valid-params': 'error', // Ensure correct number of arguments to Promise functions
     },
   },
   prettier,
