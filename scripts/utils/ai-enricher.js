@@ -17,19 +17,28 @@ export async function enrichWithAI(fileInfos) {
   console.log(`🤖 Enriching ${fileInfos.length} files with AI descriptions...`);
 
   const enrichedInfos = [];
+  let successCount = 0;
 
   for (const fileInfo of fileInfos) {
     try {
       console.log(`   Analyzing ${fileInfo.path}...`);
       const enriched = await enrichFile(fileInfo);
       enrichedInfos.push(enriched);
+      successCount++;
     } catch (error) {
       console.warn(`   ⚠️  Failed to enrich ${fileInfo.path}: ${error.message}`);
       enrichedInfos.push(fileInfo); // Keep original
     }
   }
 
-  console.log('✅ AI enrichment complete');
+  if (successCount === 0) {
+    console.log('⚠️  AI enrichment skipped (Claude Code not available)');
+  } else if (successCount < fileInfos.length) {
+    console.log(`✅ AI enrichment complete (${successCount}/${fileInfos.length} files enriched)`);
+  } else {
+    console.log('✅ AI enrichment complete');
+  }
+  
   return enrichedInfos;
 }
 
