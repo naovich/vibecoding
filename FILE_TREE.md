@@ -31,6 +31,7 @@ vibecoding/
 │   ├── pre-commit
 │   └── pre-push
 ├── docs/
+│   ├── generate-docs.md
 │   └── TAILWIND_CANONICAL_SYNTAX.md
 ├── public/
 │   └── vite.svg
