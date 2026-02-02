@@ -50,6 +50,7 @@ vibecoding/
 ├── .prettierignore
 ├── .prettierrc.json
 ├── AGENT.md
+├── CLAUDE.md
 ├── commitlint.config.js
 ├── eslint.config.js
 ├── FILE_TREE.md
