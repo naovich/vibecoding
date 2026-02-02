@@ -167,11 +167,11 @@ Les chemins sont maintenant relatifs au projet, ce qui rend la documentation :
 Utilisez directement :
 
 ```bash
-npm run docs        # Mode complet
-npm run docs -- --ai     # Mode AI (fichiers modifiés uniquement)
+npx tsx scripts/generate-docs.ts        # Mode complet
+npx tsx scripts/generate-docs.ts --ai   # Mode AI (fichiers modifiés uniquement)
 ```
 
-**Note :** Le `--` avant `--ai` est nécessaire pour passer l'argument au script (convention npm standard).
+**Note :** Ce script utilise `tsx` pour TypeScript. Les arguments fonctionnent directement.
 
 ### Hook Git (pre-commit)
 

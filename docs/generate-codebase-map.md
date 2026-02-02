@@ -35,7 +35,7 @@ Génère `CODEBASE.md` avec les signatures de tous les exports.
 ### Mode AI (avec descriptions Claude Code)
 
 ```bash
-npm run map -- --ai
+npm run map:ai
 ```
 
 Génère `CODEBASE.md` enrichi avec des descriptions AI.
@@ -59,13 +59,13 @@ Génère `CODEBASE.md` enrichi avec des descriptions AI.
 
 ## 📊 Cross-Platform (Windows/Linux/Mac)
 
-La commande `npm run map -- --ai` fonctionne **sur tous les OS** :
+Les commandes fonctionnent **sur tous les OS** :
 
 - ✅ **Windows** (PowerShell, CMD)
 - ✅ **Linux** (bash, zsh)
 - ✅ **Mac** (bash, zsh)
 
-**Note technique :** Le double `--` est une convention npm pour passer les arguments au script. Un wrapper (`scripts/map.js`) garantit que les arguments sont correctement transmis sur tous les OS.
+**Note technique :** Utilise `cross-env` pour définir les variables d'environnement de manière cross-platform. Pas besoin de `--` ni de wrapper spécifique.
 
 ## 🤖 Mode AI - Détails
 
@@ -225,11 +225,11 @@ const files = await glob('lib/**/*.{ts,tsx}', {
 node scripts/generate-codebase-map.js | grep "Found"
 ```
 
-### Arguments non passés (Windows)
+### Mode AI ne fonctionne pas
 
-**Problème :** `npm run map --ai` ne fonctionne pas.
+**Problème :** `npm run map:ai` ne détecte pas le mode AI.
 
-**Solution :** Utilise `npm run map -- --ai` (avec double `--`).
+**Solution :** Assure-toi que `cross-env` est installé : `npm install -D cross-env`
 
 ---
 

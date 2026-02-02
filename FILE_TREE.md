@@ -44,8 +44,7 @@ vibecoding/
 │   ├── enforce-coverage.js
 │   ├── generate-codebase-map.js
 │   ├── generate-docs.ts
-│   ├── generate-tree.js
-│   └── map-ai.js
+│   └── generate-tree.js
 ├── src/
 │   ├── test/
 │   │   └── setup.ts
