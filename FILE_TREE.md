@@ -36,6 +36,7 @@ vibecoding/
 │   └── vite.svg
 ├── scripts/
 │   ├── utils/
+│   │   ├── ai-enricher.js
 │   │   ├── markdown-builder.js
 │   │   └── typescript-parser.js
 │   ├── enforce-coverage.js

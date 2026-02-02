@@ -9,6 +9,7 @@ import tailwindcss from 'eslint-plugin-better-tailwindcss';
 import importPlugin from 'eslint-plugin-import';
 import simpleImportSort from 'eslint-plugin-simple-import-sort';
 import promisePlugin from 'eslint-plugin-promise';
+import jsdoc from 'eslint-plugin-jsdoc';
 import prettier from 'eslint-config-prettier';
 
 export default [
@@ -67,6 +68,7 @@ export default [
       'import': importPlugin,
       'simple-import-sort': simpleImportSort,
       'promise': promisePlugin,
+      'jsdoc': jsdoc,
     },
     rules: {
       // TypeScript strict rules
@@ -151,6 +153,23 @@ export default [
       'promise/no-return-wrap': 'error', // Avoid wrapping values in Promise.resolve/reject unnecessarily
       'promise/param-names': 'error', // Enforce standard parameter names (resolve, reject)
       'promise/valid-params': 'error', // Ensure correct number of arguments to Promise functions
+      
+      // JSDoc rules - encourage documentation for CODEBASE.md generation
+      'jsdoc/require-jsdoc': ['warn', {
+        require: {
+          FunctionDeclaration: true,
+          MethodDefinition: false,
+          ClassDeclaration: false,
+          ArrowFunctionExpression: false,
+          FunctionExpression: false,
+        },
+        publicOnly: true,
+      }],
+      'jsdoc/require-description': 'warn', // Require description in JSDoc
+      'jsdoc/require-param-description': 'off', // Optional: param descriptions
+      'jsdoc/require-returns-description': 'off', // Optional: return descriptions
+      'jsdoc/check-alignment': 'warn', // Check JSDoc alignment
+      'jsdoc/check-indentation': 'warn', // Check JSDoc indentation
     },
   },
   prettier,

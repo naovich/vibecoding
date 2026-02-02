@@ -409,7 +409,46 @@ function processData(data: any): void {
 }
 ```
 
-### 8. RegExp Best Practices
+### 8. JSDoc Documentation (IMPORTANT)
+
+**JSDoc helps generate CODEBASE.md** - a map of all functions/components that prevents code duplication.
+
+✅ **Write JSDoc for all exported functions:**
+
+```typescript
+/**
+ * Create a new user with email validation
+ * @param data - User input data
+ * @returns Promise with created user
+ */
+export function createUser(data: UserInput): Promise<User> {
+  // ...
+}
+```
+
+✅ **JSDoc for React components:**
+
+```typescript
+/**
+ * User profile component displaying avatar, name, and bio
+ * @param props - Component props
+ */
+export function UserProfile({ user, onEdit }: UserProfileProps): JSX.Element {
+  // ...
+}
+```
+
+**Why JSDoc matters:**
+
+- `npm run map` extracts JSDoc to generate CODEBASE.md
+- Claude Code reads CODEBASE.md before creating new code
+- Prevents duplication (knows what already exists)
+- ESLint warns if JSDoc is missing on exported functions
+
+**Without JSDoc:** Just signatures in CODEBASE.md  
+**With JSDoc:** Full descriptions + usage examples
+
+### 9. RegExp Best Practices
 
 ❌ **Use String.match() (less performant, inconsistent):**
 
