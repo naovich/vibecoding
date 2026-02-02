@@ -8,6 +8,9 @@
 
 ```
 vibecoding/
+├── .github/
+│   └── appmod/
+│       └── appcat/
 ├── .husky/
 │   ├── _/
 │   │   ├── .gitignore
@@ -59,7 +62,6 @@ vibecoding/
 ├── .prettierignore
 ├── .prettierrc
 ├── .prettierrc.json
-├── .tmp-ai-prompt.txt
 ├── AGENT.md
 ├── CLAUDE.md
 ├── CODEBASE.md
