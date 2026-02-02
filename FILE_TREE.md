@@ -41,6 +41,7 @@ vibecoding/
 │   │   └── typescript-parser.js
 │   ├── enforce-coverage.js
 │   ├── generate-codebase-map.js
+│   ├── generate-docs.ts
 │   └── generate-tree.js
 ├── src/
 │   ├── test/
@@ -63,6 +64,7 @@ vibecoding/
 ├── index.html
 ├── package.json
 ├── postcss.config.js
+├── PROJECT_STRUCTURE.md
 ├── README.md
 ├── tailwind.config.js
 ├── THEME.md
