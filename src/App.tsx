@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 
+/**
+ * Main application component - VibeCoding template landing page
+ */
 function App(): React.JSX.Element {
   const [count, setCount] = useState(0);
 
