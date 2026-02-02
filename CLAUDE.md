@@ -1,7 +1,10 @@
 # CLAUDE.md
 
-Read AGENT.md
+## Before Starting
 
-Read FILE_TREE.md for project structure
+Read these files in order:
 
-Read CODEBASE.md for available functions/components
+1. **AGENT.md** - All rules, best practices, and workflows
+2. **README.md** - Project overview and setup
+3. **FILE_TREE.md** - Complete project structure (auto-generated)
+4. **CODEBASE.md** - All exported functions/components with JSDoc (auto-generated)

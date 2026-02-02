@@ -6,6 +6,18 @@
 
 ---
 
+## 📚 Before You Start
+
+**Read these files in order:**
+
+1. **README.md** - Project overview, setup, and quick start
+2. **FILE_TREE.md** - Complete project structure (auto-generated)
+3. **CODEBASE.md** - All exported functions/components with JSDoc (auto-generated)
+
+These files are updated automatically on every commit.
+
+---
+
 ## 🎯 Core Philosophy
 
 **Your Mission:** Write clean, maintainable, bug-free code that passes all automated checks.
