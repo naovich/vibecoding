@@ -74,7 +74,7 @@ function shouldExclude(name) {
   return EXCLUDED_PATTERNS.some(pattern => {
     if (pattern.includes('*')) {
       const regex = new RegExp(
-        '^' + pattern.replace(/\*/g, '.*').replace(/\?/g, '.') + '$'
+        '^' + pattern.replaceAll('*', '.*').replaceAll('?', '.') + '$'
       );
       return regex.test(name);
     }

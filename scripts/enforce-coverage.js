@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import fs from 'fs';
+import fs from 'node:fs';
 
 const MIN_COVERAGE = 80;
 const coverageFile = 'coverage/coverage-summary.json';

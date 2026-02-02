@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import fs from 'fs';
+import fs from 'node:fs';
 import { parse } from '@typescript-eslint/typescript-estree';
 
 /**

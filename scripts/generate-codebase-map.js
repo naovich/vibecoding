@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-import fs from 'fs';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 import { glob } from 'glob';
-import path from 'path';
-import { fileURLToPath } from 'url';
 import { parseFile } from './utils/typescript-parser.js';
 import { buildMarkdown } from './utils/markdown-builder.js';
 import { enrichWithAI } from './utils/ai-enricher.js';
@@ -52,7 +52,7 @@ async function generateCodebaseMap() {
         const fileInfo = parseFile(file);
         if (fileInfo) {
           // Replace absolute path with relative path (normalized to forward slashes)
-          fileInfo.path = relativePath.replace(/\\/g, '/');
+          fileInfo.path = relativePath.replaceAll('\\', '/');
         }
         return fileInfo;
       })

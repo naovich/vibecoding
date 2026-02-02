@@ -44,7 +44,7 @@ function groupByDirectory(fileInfos) {
 
   fileInfos.forEach((fileInfo) => {
     // Normalize path to use forward slashes (cross-platform)
-    const normalizedPath = fileInfo.path.replace(/\\/g, '/');
+    const normalizedPath = fileInfo.path.replaceAll('\\', '/');
     const parts = normalizedPath.split('/');
     const dir = parts.slice(0, -1).join('/');
     const dirKey = dir || 'root';
@@ -64,7 +64,7 @@ function groupByDirectory(fileInfos) {
 function buildFileSection(fileInfo) {
   const sections = [];
   // Normalize path to use forward slashes (cross-platform)
-  const normalizedPath = fileInfo.path.replace(/\\/g, '/');
+  const normalizedPath = fileInfo.path.replaceAll('\\', '/');
   const fileName = normalizedPath.split('/').pop();
 
   sections.push(`### ${fileName}`);

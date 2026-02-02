@@ -18,15 +18,37 @@ export default [
   {
     ignores: [
       'node_modules/**',
-      'scripts/**',
       '*.config.ts',
       '*.config.js',
       'dist/**',
       'coverage/**',
     ],
   },
+  // Configuration for Node.js scripts
+  {
+    files: ['scripts/**/*.js'],
+    languageOptions: {
+      ecmaVersion: 'latest',
+      sourceType: 'module',
+      globals: {
+        console: 'readonly',
+        process: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+      },
+    },
+    plugins: {
+      'unicorn': unicorn,
+    },
+    rules: {
+      // Unicorn rules for Node.js best practices
+      'unicorn/prefer-node-protocol': 'error',
+      'unicorn/prefer-string-replace-all': 'error',
+    },
+  },
   {
     files: ['**/*.{ts,tsx}'],
+    ignores: ['scripts/**/*.ts'],  // Scripts TS use separate tsconfig
     settings: {
       react: {
         version: 'detect',
