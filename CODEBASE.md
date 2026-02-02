@@ -12,5 +12,6 @@ _Last updated: 2026-02-02_
 **Components:**
 
 - `App` _(default export)_
+  - Main application component - VibeCoding template landing page
 
 ---

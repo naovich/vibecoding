@@ -32,7 +32,7 @@ export function parseFile(filePath) {
       if (node.type === 'ExportNamedDeclaration') {
         handleNamedExport(node, result.exports, content);
       } else if (node.type === 'ExportDefaultDeclaration') {
-        handleDefaultExport(node, result.exports, content);
+        handleDefaultExport(node, result.exports, content, ast);
       }
     });
 
@@ -122,21 +122,114 @@ function handleNamedExport(node, exports, content) {
 /**
  * Handle default exports
  */
-function handleDefaultExport(node, exports, content) {
+function handleDefaultExport(node, exports, content, ast) {
   const decl = node.declaration;
 
   if (decl.type === 'FunctionDeclaration' || decl.type === 'ArrowFunctionExpression') {
     const func = extractFunction(decl, content);
     func.isDefault = true;
-    exports.functions.push(func);
+    
+    // Check if it's a React component (returns JSX)
+    if (isReactComponentFunction(decl)) {
+      exports.components.push({
+        name: func.name,
+        description: func.description,
+        isDefault: true,
+        props: null,
+      });
+    } else {
+      exports.functions.push(func);
+    }
   } else if (decl.type === 'Identifier') {
-    // Default export of existing declaration
-    exports.components.push({
-      name: decl.name,
-      isDefault: true,
-      description: null,
-    });
+    // Default export of existing declaration - find the original
+    const originalDecl = findDeclaration(ast, decl.name);
+    if (originalDecl) {
+      const description = extractJSDoc(originalDecl, content);
+      
+      // Check if it's a component
+      if (isReactComponentFunction(originalDecl)) {
+        exports.components.push({
+          name: decl.name,
+          isDefault: true,
+          description,
+          props: null,
+        });
+      } else {
+        exports.functions.push({
+          name: decl.name,
+          isDefault: true,
+          description,
+          params: [],
+          returns: 'unknown',
+          isAsync: false,
+        });
+      }
+    } else {
+      // Fallback
+      exports.components.push({
+        name: decl.name,
+        isDefault: true,
+        description: null,
+      });
+    }
   }
+}
+
+/**
+ * Find a declaration by name in the AST
+ */
+function findDeclaration(ast, name) {
+  for (const node of ast.body) {
+    if (node.type === 'FunctionDeclaration' && node.id?.name === name) {
+      return node;
+    }
+    if (node.type === 'VariableDeclaration') {
+      for (const declarator of node.declarations) {
+        if (declarator.id?.name === name) {
+          return declarator;
+        }
+      }
+    }
+  }
+  return null;
+}
+
+/**
+ * Check if a function declaration is a React component
+ */
+function isReactComponentFunction(node) {
+  // Check return type annotation for JSX.Element or React.JSX.Element
+  if (node.returnType?.typeAnnotation) {
+    const returnType = node.returnType.typeAnnotation;
+    
+    // Check for JSX.Element or React.JSX.Element
+    if (returnType.type === 'TSTypeReference') {
+      const typeName = returnType.typeName;
+      
+      // Handle React.JSX.Element (TSQualifiedName → TSQualifiedName → Identifier)
+      if (typeName.type === 'TSQualifiedName') {
+        // Could be React.JSX or JSX.Element
+        if (typeName.left.type === 'TSQualifiedName') {
+          // React.JSX.Element
+          return (
+            typeName.left.left?.name === 'React' &&
+            typeName.left.right?.name === 'JSX' &&
+            typeName.right?.name === 'Element'
+          );
+        }
+        
+        // JSX.Element
+        return typeName.left.name === 'JSX' && typeName.right.name === 'Element';
+      }
+      
+      // Handle just JSX
+      if (typeName.name === 'JSX') {
+        return true;
+      }
+    }
+  }
+  
+  return false;
 }
 
 /**
