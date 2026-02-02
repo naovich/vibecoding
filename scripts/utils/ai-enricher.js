@@ -81,7 +81,6 @@ Respond with JSON only (no markdown code blocks):
     const isWindows = process.platform === 'win32';
     const catCommand = isWindows ? 'type' : 'cat';
     
-    console.log(`   ℹ️  Calling Claude Code...`);
     const result = execSync(`${catCommand} "${tmpFile}" | claude --print`, {
       encoding: 'utf-8',
       timeout: 30000,
@@ -91,18 +90,13 @@ Respond with JSON only (no markdown code blocks):
     // Clean up temp file
     fs.unlinkSync(tmpFile);
 
-    console.log(`   ℹ️  Claude Code response length: ${result.length} chars`);
-
     // Parse response - look for JSON
     const jsonMatch = result.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
-      console.warn(`   ⚠️  Response: ${result.substring(0, 500)}...`);
       throw new Error('No valid JSON in response');
     }
 
-    console.log(`   ℹ️  Found JSON in response`);
     const descriptions = JSON.parse(jsonMatch[0]);
-    console.log(`   ℹ️  Parsed JSON successfully`);
 
     // Apply descriptions
     if (descriptions.fileDescription && !fileInfo.description) {
