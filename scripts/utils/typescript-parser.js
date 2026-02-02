@@ -70,27 +70,46 @@ function extractFileDescription(content) {
  * Extract JSDoc comment before node
  */
 function extractJSDoc(node, content) {
-  if (!node.loc) return null;
+  if (!node.loc) {
+    console.log('   [DEBUG] No location info for node');
+    return null;
+  }
 
-  const lines = content.split('\n');
+  // Normalize line endings (handle Windows CRLF)
+  const normalizedContent = content.replace(/\r\n/g, '\n');
+  const lines = normalizedContent.split('\n');
   const startLine = node.loc.start.line - 1;
+
+  console.log(`   [DEBUG] Extracting JSDoc for node at line ${startLine + 1}`);
 
   // Look backwards for JSDoc
   let description = [];
   for (let i = startLine - 1; i >= 0; i--) {
     const line = lines[i].trim();
-    if (line.startsWith('*/')) continue;
-    if (line.startsWith('/**')) break;
+    if (line.startsWith('*/')) {
+      console.log(`   [DEBUG] Found JSDoc end at line ${i + 1}`);
+      continue;
+    }
+    if (line.startsWith('/**')) {
+      console.log(`   [DEBUG] Found JSDoc start at line ${i + 1}`);
+      break;
+    }
     if (line.startsWith('*')) {
       const text = line.replace(/^\*\s?/, '').trim();
       if (text && !text.startsWith('@')) {
         description.unshift(text);
+        console.log(`   [DEBUG] Extracted: "${text}"`);
       }
     }
-    if (!line.startsWith('*') && !line.startsWith('//')) break;
+    if (!line.startsWith('*') && !line.startsWith('//')) {
+      console.log(`   [DEBUG] Hit non-comment line at ${i + 1}, stopping`);
+      break;
+    }
   }
 
-  return description.join(' ').trim() || null;
+  const result = description.join(' ').trim() || null;
+  console.log(`   [DEBUG] Final JSDoc: "${result}"`);
+  return result;
 }
 
 /**
