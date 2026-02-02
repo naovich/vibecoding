@@ -1,6 +1,12 @@
 #!/usr/bin/env node
 import { execSync } from 'child_process';
 import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const rootDir = path.resolve(__dirname, '../..');
 
 /**
  * Enrich file info with AI-generated descriptions using Claude Code CLI
@@ -31,9 +37,14 @@ export async function enrichWithAI(fileInfos) {
  * Enrich a single file using Claude Code
  */
 async function enrichFile(fileInfo) {
-  const fileContent = fs.readFileSync(fileInfo.path, 'utf-8');
+  // Resolve absolute path
+  const absolutePath = path.isAbsolute(fileInfo.path)
+    ? fileInfo.path
+    : path.join(rootDir, fileInfo.path);
 
-  const prompt = `Analyze this TypeScript/React file and provide brief descriptions:
+  const fileContent = fs.readFileSync(absolutePath, 'utf-8');
+
+  const prompt = `Analyze this TypeScript/React file and provide brief descriptions.
 
 File: ${fileInfo.path}
 
@@ -41,7 +52,7 @@ File: ${fileInfo.path}
 ${fileContent}
 \`\`\`
 
-Respond with JSON only (no markdown):
+Respond with JSON only (no markdown code blocks):
 {
   "fileDescription": "Brief file purpose (1 sentence)",
   "functions": {
@@ -53,14 +64,36 @@ Respond with JSON only (no markdown):
 }`;
 
   try {
-    // Call Claude Code CLI
-    const result = execSync(`claude --print "${prompt.replace(/"/g, '\\"')}"`, {
+    // Write prompt to temp file to avoid shell escaping issues
+    const tmpFile = path.join(rootDir, '.tmp-ai-prompt.txt');
+    fs.writeFileSync(tmpFile, prompt, 'utf-8');
+
+    // Find Claude Code CLI (try common locations)
+    const claudePaths = [
+      path.join(process.env.HOME, 'bin/bin/claude'),
+      path.join(process.env.HOME, '.local/bin/claude'),
+      'claude', // fallback to PATH
+    ];
+
+    let claudePath = 'claude';
+    for (const p of claudePaths) {
+      if (p !== 'claude' && fs.existsSync(p)) {
+        claudePath = p;
+        break;
+      }
+    }
+
+    // Call Claude Code CLI with prompt from stdin
+    const result = execSync(`cat "${tmpFile}" | "${claudePath}" --print`, {
       encoding: 'utf-8',
       timeout: 30000,
-      stdio: ['pipe', 'pipe', 'ignore'], // Ignore stderr
+      cwd: rootDir,
     });
 
-    // Parse response
+    // Clean up temp file
+    fs.unlinkSync(tmpFile);
+
+    // Parse response - look for JSON
     const jsonMatch = result.match(/\{[\s\S]*\}/);
     if (!jsonMatch) {
       throw new Error('No valid JSON in response');
