@@ -1018,9 +1018,24 @@ All code is automatically formatted by Prettier. Config:
   "singleQuote": true,
   "printWidth": 100,
   "tabWidth": 2,
-  "trailingComma": "es5"
+  "trailingComma": "es5",
+  "endOfLine": "lf"
 }
 ```
+
+**Line Endings:**
+
+- **Always LF** (`\n`), never CRLF (`\r\n`)
+- Enforced by Prettier (`endOfLine: "lf"`)
+- Enforced by ESLint (`linebreak-style: ["error", "unix"]`)
+- Git auto-converts on Windows (see `.gitattributes`)
+
+**Why:**
+
+- Consistency across Windows/Linux/Mac
+- Prevents parser issues with CRLF
+- Smaller diffs in version control
+- Standard in open source
 
 ### 2. ESLint Rules (Auto-enforced)
 

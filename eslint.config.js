@@ -163,6 +163,7 @@ export default [
       'no-eval': 'error',
       'no-implied-eval': 'error',
       'radix': 'error', // Require radix parameter in parseInt()
+      'linebreak-style': ['error', 'unix'], // Enforce LF line endings (not CRLF)
       
       // Import rules - prevent import errors and enforce best practices
       'import/no-unresolved': 'error', // Prevent broken imports

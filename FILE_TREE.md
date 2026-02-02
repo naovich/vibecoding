@@ -53,9 +53,11 @@ vibecoding/
 │   ├── index.css
 │   ├── main.tsx
 │   └── vite-env.d.ts
+├── .gitattributes
 ├── .gitignore
 ├── .lintstagedrc.json
 ├── .prettierignore
+├── .prettierrc
 ├── .prettierrc.json
 ├── .tmp-ai-prompt.txt
 ├── AGENT.md

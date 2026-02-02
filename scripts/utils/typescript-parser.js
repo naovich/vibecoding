@@ -72,9 +72,7 @@ function extractFileDescription(content) {
 function extractJSDoc(node, content) {
   if (!node.loc) return null;
 
-  // Normalize line endings (handle Windows CRLF)
-  const normalizedContent = content.replace(/\r\n/g, '\n');
-  const lines = normalizedContent.split('\n');
+  const lines = content.split('\n');
   const startLine = node.loc.start.line - 1;
 
   // Look backwards for JSDoc
