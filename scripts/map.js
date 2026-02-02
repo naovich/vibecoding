@@ -13,9 +13,15 @@ const __dirname = dirname(__filename);
 // Get all arguments after 'node scripts/map.js'
 const args = process.argv.slice(2);
 
+// DEBUG: Log what the wrapper receives
+console.log(`🔍 DEBUG wrapper - process.argv: ${JSON.stringify(process.argv)}`);
+console.log(`🔍 DEBUG wrapper - args: ${JSON.stringify(args)}`);
+
 // Build the command with proper argument passing
 const scriptPath = join(__dirname, 'generate-codebase-map.js');
 const command = `node "${scriptPath}" ${args.join(' ')}`;
+
+console.log(`🔍 DEBUG wrapper - command: ${command}`);
 
 try {
   execSync(command, { 
