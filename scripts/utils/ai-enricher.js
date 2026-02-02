@@ -68,44 +68,14 @@ Respond with JSON only (no markdown code blocks):
     const tmpFile = path.join(rootDir, '.tmp-ai-prompt.txt');
     fs.writeFileSync(tmpFile, prompt, 'utf-8');
 
-    // Find Claude Code CLI (try common locations - cross-platform)
-    const homeDir = process.env.HOME || process.env.USERPROFILE; // Linux/Mac: HOME, Windows: USERPROFILE
+    // Call Claude Code CLI (assumes 'claude' is in PATH)
     const isWindows = process.platform === 'win32';
-    
-    const claudePaths = [
-      // Linux/Mac paths
-      path.join(homeDir, 'bin/bin/claude'),
-      path.join(homeDir, '.local/bin/claude'),
-      // Windows paths
-      path.join(homeDir, 'AppData/Local/Programs/claude/claude.exe'),
-      path.join(homeDir, 'AppData/Roaming/npm/claude.cmd'),
-      path.join(homeDir, '.claude/claude.exe'),
-      // Global npm install
-      path.join(homeDir, 'AppData/Roaming/npm/node_modules/@anthropic/claude-code/bin/claude.cmd'),
-      'claude', // fallback to PATH
-    ];
-
-    let claudePath = 'claude';
-    for (const p of claudePaths) {
-      if (p !== 'claude' && fs.existsSync(p)) {
-        claudePath = p;
-        console.log(`   ℹ️  Found Claude Code at: ${claudePath}`);
-        break;
-      }
-    }
-    
-    // If not found in common locations, check if it's in PATH
-    if (claudePath === 'claude') {
-      console.log(`   ℹ️  Using Claude Code from PATH (or will fail if not available)`);
-    }
-
-    // Call Claude Code CLI with prompt from stdin (cross-platform)
     const catCommand = isWindows ? 'type' : 'cat';
-    const result = execSync(`${catCommand} "${tmpFile}" | "${claudePath}" --print`, {
+    
+    const result = execSync(`${catCommand} "${tmpFile}" | claude --print`, {
       encoding: 'utf-8',
       timeout: 30000,
       cwd: rootDir,
-      shell: isWindows ? 'cmd.exe' : '/bin/sh',
     });
 
     // Clean up temp file
@@ -138,6 +108,12 @@ Respond with JSON only (no markdown code blocks):
 
     return fileInfo;
   } catch (error) {
+    // Check if Claude Code is not in PATH
+    if (error.message.includes('not found') || error.message.includes('is not recognized')) {
+      throw new Error(
+        'Claude Code CLI not found in PATH. Install it or add to PATH: https://github.com/anthropics/claude-code'
+      );
+    }
     throw new Error(`Claude Code failed: ${error.message}`);
   }
 }
