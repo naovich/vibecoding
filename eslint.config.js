@@ -44,6 +44,12 @@ export default [
       // Unicorn rules for Node.js best practices
       'unicorn/prefer-node-protocol': 'error',
       'unicorn/prefer-string-replace-all': 'error',
+      'unicorn/prefer-number-properties': 'error',
+      'unicorn/no-for-loop': 'error',
+      'unicorn/prefer-top-level-await': 'error',
+      // ESLint built-in rules
+      'radix': 'error',
+      'no-console': ['warn', { allow: ['warn', 'error', 'log'] }], // Allow console.log in scripts
     },
   },
   {

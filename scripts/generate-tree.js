@@ -143,8 +143,8 @@ function generateTreeString(entries, prefix = '', isLast = []) {
 
     // Build the prefix for this line
     let linePrefix = '';
-    for (let i = 0; i < isLast.length; i++) {
-      linePrefix += isLast[i] ? '    ' : '│   ';
+    for (const element of isLast) {
+      linePrefix += element ? '    ' : '│   ';
     }
 
     // Add the branch character
@@ -232,8 +232,8 @@ Examples:
     }
 
     if (arg === '--depth' || arg === '-d') {
-      const depth = parseInt(args[++i], 10);
-      options.maxDepth = isNaN(depth) ? 0 : depth;
+      const depth = Number.parseInt(args[++i], 10);
+      options.maxDepth = Number.isNaN(depth) ? 0 : depth;
     }
   }
 
