@@ -12,11 +12,13 @@
 
 **Golden Rules:**
 
-1. ✅ **If it can be checked automatically, it WILL be blocked automatically**
-2. ✅ **Zero tolerance for `: any`** (use specific types or `unknown`)
-3. ✅ **Every function has tests** (minimum 80% coverage)
-4. ✅ **Files under 500 lines** (split larger files into modules)
-5. ✅ **Commits follow conventional format** (`type(scope): description`)
+1. ✅ **Search before creating** - Always check if component/utility exists
+2. ✅ **DRY principle** - Extract common patterns, avoid duplication
+3. ✅ **Zero tolerance for `: any`** - Use specific types or `unknown`
+4. ✅ **TDD workflow** - Write tests FIRST (RED → GREEN → REFACTOR)
+5. ✅ **Files under 500 lines** - Split larger files into modules
+6. ✅ **Fix ALL warnings** - ESLint, TypeScript, SonarQube before commit
+7. ✅ **Commits follow convention** - `type(scope): description`
 
 ---
 
@@ -57,6 +59,181 @@ These run BEFORE your push is accepted:
 ❌ BLOCKS if TypeScript build fails
 ❌ BLOCKS if any test fails
 ❌ BLOCKS if coverage < 80%
+```
+
+---
+
+## ⚛️ React Best Practices
+
+### 1. Component Type Definitions
+
+❌ **Avoid React.FC (deprecated pattern):**
+
+```typescript
+const MyComponent: React.FC<Props> = ({ name }) => {
+  return <div>{name}</div>;
+};
+```
+
+✅ **Use direct interface instead:**
+
+```typescript
+interface Props {
+  name: string;
+  age?: number;
+}
+
+function MyComponent({ name, age }: Props): JSX.Element {
+  return (
+    <div>
+      {name} {age && `(${age})`}
+    </div>
+  );
+}
+
+// Or with arrow function
+const MyComponent = ({ name, age }: Props): JSX.Element => {
+  return <div>{name}</div>;
+};
+```
+
+**Why:** React.FC has known issues with children typing and doesn't provide real benefits. Direct props typing is clearer and more flexible.
+
+### 2. Component Composition Over Duplication
+
+❌ **Duplicating large components:**
+
+```typescript
+function UserCard() {
+  return (
+    <div className="rounded-lg border bg-white p-4 shadow">
+      <img src={user.avatar} className="h-12 w-12 rounded-full" />
+      <h3 className="text-lg font-bold">{user.name}</h3>
+      <p className="text-gray-600">{user.email}</p>
+    </div>
+  );
+}
+
+function ProductCard() {
+  return (
+    <div className="rounded-lg border bg-white p-4 shadow">
+      <img src={product.image} className="h-12 w-12 rounded-full" />
+      <h3 className="text-lg font-bold">{product.name}</h3>
+      <p className="text-gray-600">{product.price}</p>
+    </div>
+  );
+}
+```
+
+✅ **Compose small, reusable components:**
+
+```typescript
+interface CardProps {
+  children: React.ReactNode;
+}
+
+function Card({ children }: CardProps): JSX.Element {
+  return <div className="rounded-lg border bg-white p-4 shadow">{children}</div>;
+}
+
+interface CardHeaderProps {
+  image: string;
+  title: string;
+  subtitle: string;
+}
+
+function CardHeader({ image, title, subtitle }: CardHeaderProps): JSX.Element {
+  return (
+    <>
+      <img src={image} className="h-12 w-12 rounded-full" />
+      <h3 className="text-lg font-bold">{title}</h3>
+      <p className="text-gray-600">{subtitle}</p>
+    </>
+  );
+}
+
+// Now compose
+function UserCard() {
+  return (
+    <Card>
+      <CardHeader image={user.avatar} title={user.name} subtitle={user.email} />
+    </Card>
+  );
+}
+
+function ProductCard() {
+  return (
+    <Card>
+      <CardHeader image={product.image} title={product.name} subtitle={product.price} />
+    </Card>
+  );
+}
+```
+
+### 3. Conditional Rendering
+
+❌ **AVOID nested ternary (unreadable):**
+
+```typescript
+function Status({ type }: { type: string }) {
+  return (
+    <div>
+      {type === 'success' ? (
+        'Success'
+      ) : type === 'error' ? (
+        'Error'
+      ) : type === 'warning' ? (
+        'Warning'
+      ) : (
+        'Info'
+      )}
+    </div>
+  );
+}
+```
+
+✅ **Use switch with IIFE for complex conditions:**
+
+```typescript
+function Status({ type }: { type: string }): JSX.Element {
+  return (
+    <div>
+      {(() => {
+        switch (type) {
+          case 'success':
+            return <span className="text-green-600">Success</span>;
+          case 'error':
+            return <span className="text-red-600">Error</span>;
+          case 'warning':
+            return <span className="text-yellow-600">Warning</span>;
+          default:
+            return <span className="text-blue-600">Info</span>;
+        }
+      })()}
+    </div>
+  );
+}
+```
+
+✅ **Or extract to helper function:**
+
+```typescript
+function getStatusComponent(type: string): JSX.Element {
+  switch (type) {
+    case 'success':
+      return <span className="text-green-600">Success</span>;
+    case 'error':
+      return <span className="text-red-600">Error</span>;
+    case 'warning':
+      return <span className="text-yellow-600">Warning</span>;
+    default:
+      return <span className="text-blue-600">Info</span>;
+  }
+}
+
+function Status({ type }: { type: string }): JSX.Element {
+  return <div>{getStatusComponent(type)}</div>;
+}
 ```
 
 ---
@@ -230,6 +407,228 @@ function processData(data: unknown): void {
 function processData(data: any): void {
   console.log(data.toUpperCase()); // Runtime error if not string
 }
+```
+
+### 8. RegExp Best Practices
+
+❌ **Use String.match() (less performant, inconsistent):**
+
+```typescript
+const text = 'Hello world';
+const match = text.match(/world/);
+if (match) {
+  console.log(match[0]); // 'world'
+}
+```
+
+✅ **Use RegExp.exec() for better performance and consistency:**
+
+```typescript
+const text = 'Hello world';
+const regex = /world/;
+const match = regex.exec(text);
+if (match) {
+  console.log(match[0]); // 'world'
+}
+```
+
+✅ **For global matches, RegExp.exec() is the only option:**
+
+```typescript
+const text = 'cat bat hat';
+const regex = /\b(\w)at\b/g;
+let match;
+
+while ((match = regex.exec(text)) !== null) {
+  console.log(`Found ${match[0]}, first letter: ${match[1]}`);
+}
+// Output:
+// Found cat, first letter: c
+// Found bat, first letter: b
+// Found hat, first letter: h
+```
+
+**Why:**
+
+- `RegExp.exec()` is more performant
+- Consistent API for both single and global matches
+- Required for iterating over all matches with `/g` flag
+- SonarJS rule `prefer-regexp-exec` enforces this
+
+---
+
+## 🎨 Styling with Tailwind CSS
+
+### 1. Always Use Tailwind Classes First
+
+❌ **Don't write custom CSS when Tailwind class exists:**
+
+```css
+/* Bad - custom CSS */
+.button {
+  padding: 0.5rem 1rem;
+  background-color: #3b82f6;
+  border-radius: 0.375rem;
+}
+```
+
+✅ **Use Tailwind utility classes:**
+
+```typescript
+<button className="rounded-md bg-blue-500 px-4 py-2">Click me</button>
+```
+
+### 2. Custom CSS Only When Necessary
+
+**When Tailwind doesn't provide what you need:**
+
+```css
+/* index.css - Create CSS variables for custom colors */
+@theme {
+  /* Custom Colors */
+  --color-brand-primary: oklch(0.58 0.25 280);
+  --color-brand-secondary: oklch(0.48 0.22 330);
+
+  /* Custom Shadows */
+  --shadow-glow: 0 0 20px oklch(0.7 0.3 280 / 0.5);
+
+  /* Custom Easings */
+  --ease-fluid: cubic-bezier(0.3, 0, 0, 1);
+}
+```
+
+**Then use in Tailwind:**
+
+```typescript
+<div className="bg-brand-primary shadow-glow">Custom themed component</div>
+```
+
+### 3. When to Use Custom CSS Classes
+
+✅ **Complex animations or very specific styles:**
+
+```css
+/* index.css */
+@keyframes pulse-glow {
+  0%,
+  100% {
+    box-shadow: 0 0 20px var(--color-brand-primary);
+  }
+  50% {
+    box-shadow: 0 0 40px var(--color-brand-primary);
+  }
+}
+
+.pulse-glow-animation {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+```
+
+```typescript
+<div className="pulse-glow-animation">Pulsing element</div>
+```
+
+**Rule:** Try Tailwind first, use custom CSS only when Tailwind can't do it.
+
+---
+
+## 🔍 Code Reusability & DRY
+
+### 1. ALWAYS Search Before Creating
+
+❌ **Creating duplicate code without checking:**
+
+```typescript
+// Creating new function without checking if similar exists
+export function formatUserName(user: User): string {
+  return `${user.firstName} ${user.lastName}`;
+}
+```
+
+✅ **Search first, reuse if exists:**
+
+```bash
+# Search for existing formatters
+grep -r "format.*Name" src/
+
+# Search for similar functions
+grep -r "firstName.*lastName" src/
+
+# Use existing function if found
+import { formatFullName } from '@/shared/utils/string';
+```
+
+### 2. Extract Common Patterns
+
+❌ **Repeated logic in multiple places:**
+
+```typescript
+// In UserProfile.tsx
+const fullName = `${user.firstName} ${user.lastName}`;
+
+// In UserCard.tsx
+const fullName = `${user.firstName} ${user.lastName}`;
+
+// In UserList.tsx
+const fullName = `${user.firstName} ${user.lastName}`;
+```
+
+✅ **Create shared utility:**
+
+```typescript
+// src/shared/utils/user.helpers.ts
+export function getFullName(user: { firstName: string; lastName: string }): string {
+  return `${user.firstName} ${user.lastName}`;
+}
+
+// Now use everywhere
+import { getFullName } from '@/shared/utils/user.helpers';
+const fullName = getFullName(user);
+```
+
+### 3. Check for Similar Files
+
+**Before creating new components/utilities:**
+
+```bash
+# Search for similar components
+find src -name "*Button*"
+find src -name "*Card*"
+
+# Search for similar functionality
+grep -r "export.*function.*validate" src/
+grep -r "export.*interface.*User" src/
+
+# Check if pattern already exists
+grep -r "onClick.*submit" src/
+```
+
+### 4. Refactor When You See Duplication
+
+**3rd time you write similar code = time to refactor**
+
+```typescript
+// ❌ Duplication threshold reached
+function validateEmail(email: string): boolean {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function validateUsername(username: string): boolean {
+  return /^[a-zA-Z0-9_]{3,20}$/.test(username);
+}
+
+function validatePassword(password: string): boolean {
+  return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/.test(password);
+}
+
+// ✅ Extract common pattern
+function createValidator(regex: RegExp): (value: string) => boolean {
+  return (value: string) => regex.test(value);
+}
+
+const validateEmail = createValidator(/^[^\s@]+@[^\s@]+\.[^\s@]+$/);
+const validateUsername = createValidator(/^[a-zA-Z0-9_]{3,20}$/);
+const validatePassword = createValidator(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{8,}$/);
 ```
 
 ---
@@ -904,6 +1303,28 @@ npm install
 npm run type-check
 ```
 
+**CRITICAL: Search for existing code first!**
+
+```bash
+# Before creating a new component
+find src -name "*Button*"
+find src -name "*Modal*"
+
+# Before creating a new utility
+grep -r "export.*function.*format" src/
+grep -r "export.*function.*validate" src/
+
+# Before creating a new hook
+find src -name "use*.ts"
+grep -r "export.*function.*use" src/
+
+# Search for similar patterns
+grep -r "firstName.*lastName" src/
+grep -r "onClick.*submit" src/
+```
+
+**Rule:** If similar code exists, reuse or refactor it. Don't duplicate!
+
 ### 2. While Coding
 
 ```bash
@@ -917,18 +1338,73 @@ npm test
 npm run lint:fix
 ```
 
-### 3. Before Commit
+### 3. Before Commit - Complete Validation
 
-The pre-commit hook will automatically:
+**MANDATORY validation workflow (run in order):**
 
-- ✅ Run ESLint and fix issues
+```bash
+# 1. Format code with Prettier
+npm run format
+
+# 2. Fix linting issues (includes SonarJS rules)
+npm run lint -- --fix
+
+# 3. Check TypeScript types
+npm run type-check
+
+# 4. Run tests
+npm run test:run
+
+# 5. Verify production build
+npm run build
+```
+
+**The pre-commit hook will automatically:**
+
+- ✅ Run ESLint and fix issues (including SonarJS quality checks)
 - ✅ Run Prettier and format code
 - ✅ Check TypeScript types
 - ✅ Check for `: any` usage
-- ✅ Check file sizes
+- ✅ Check file sizes (max 500 lines)
 - ✅ Run tests for modified files
 
-If ANY check fails, your commit is blocked. Fix the issues and try again.
+**If ANY check fails, your commit is blocked. Fix the issues and try again.**
+
+### 3.1. Check IDE Diagnostics (SonarQube Issues)
+
+**Before committing, check your IDE for SonarQube warnings:**
+
+- 🔍 Look for yellow/orange squiggly lines (warnings)
+- 🔍 Check "Problems" panel in VSCode
+- 🔍 Review SonarLint suggestions if installed
+
+**Common SonarQube issues to fix:**
+
+```typescript
+// ❌ Cognitive complexity too high (warning)
+function processOrder() {
+  // ... 100 lines of nested if/for/while
+}
+
+// ❌ Duplicate string literals (warning)
+console.log('Invalid input');
+console.log('Invalid input');
+console.log('Invalid input');
+
+// ❌ Identical functions (warning)
+function getUserName() {
+  /* ... */
+}
+function getAuthorName() {
+  /* same logic */
+}
+
+// ❌ Unnecessary variable (warning)
+const total = calculateTotal();
+return total; // Just return calculateTotal()
+```
+
+**Fix ALL errors AND warnings before finalizing your commit.**
 
 ### 4. Commit Message Format
 
@@ -1050,14 +1526,52 @@ git commit -m "feat: add user login feature"
 
 ## ✅ Quick Checklist Before Commit
 
+### Code Quality
+
+- [ ] Searched for existing similar code (grep/find)
+- [ ] Reused existing components/utilities when possible
+- [ ] Extracted common patterns into shared utilities
+- [ ] No code duplication (DRY principle)
+
+### React & Component Design
+
+- [ ] Used direct interface instead of React.FC
+- [ ] No nested ternary operators (used switch/IIFE)
+- [ ] Composed small components instead of duplicating large ones
+- [ ] Used `RegExp.exec()` instead of `String.match()`
+
+### Styling
+
+- [ ] Used Tailwind classes when possible
+- [ ] Created CSS variables in index.css for custom colors
+- [ ] Custom CSS only when Tailwind can't do it
+
+### TypeScript & Validation
+
 - [ ] Code compiles (`npm run build`)
-- [ ] All tests pass (`npm run test:run`)
-- [ ] No `: any` in code (`npm run check:any`)
-- [ ] All files < 500 lines (`npm run check:file-size`)
 - [ ] Code is formatted (`npm run format`)
-- [ ] No ESLint errors (`npm run lint`)
-- [ ] Commit message follows convention
-- [ ] Tests written for new code
+- [ ] No ESLint errors/warnings (`npm run lint -- --fix`)
+- [ ] No TypeScript errors (`npm run type-check`)
+- [ ] No `: any` in code
+- [ ] All files < 500 lines
+
+### Testing
+
+- [ ] Tests written FIRST (TDD: RED → GREEN → REFACTOR)
+- [ ] All tests pass (`npm run test:run`)
+- [ ] Coverage ≥ 80%
+
+### IDE & SonarQube
+
+- [ ] No warnings in IDE diagnostics
+- [ ] Fixed all SonarLint/SonarQube issues
+- [ ] Cognitive complexity < 15 for all functions
+- [ ] No duplicate string literals
+- [ ] No identical functions
+
+### Git
+
+- [ ] Commit message follows convention (`type(scope): description`)
 
 **If all checks pass, commit will succeed automatically.**
 
