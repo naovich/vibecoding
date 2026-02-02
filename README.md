@@ -1,10 +1,12 @@
 # 🤖 VibeCoding Template
 
-**Template de base pour TOUS vos projets React + TypeScript**
+**Template minimal React + TypeScript avec guardrails IA**
 
-Starter production-ready avec TDD, ESLint strict, hooks Git automatiques, et documentation auto-générée.
+Comme `npm create vite@latest`, mais **enrichi** pour que les IA ne fassent pas n'importe quoi.
 
-> 🎯 **Objectif:** Cloner ce repo pour démarrer N'IMPORTE QUEL nouveau projet React TypeScript avec toutes les bonnes pratiques déjà configurées.
+> 🎯 **Objectif:** Template minimal avec toutes les **configurations strictes** et **documentation IA** déjà en place. Vous construisez votre projet par-dessus, le template garantit la qualité.
+
+---
 
 ## 🚀 Démarrer un Nouveau Projet
 
@@ -52,9 +54,9 @@ npm run build
 ### 4. Adapter le Contenu
 
 - Modifier `src/App.tsx` avec votre UI
-- Ajouter vos composants dans `src/components/` (créer le dossier)
+- Créer vos composants/hooks/utils selon vos besoins
 - Mettre à jour `README.md` avec la doc de votre projet
-- Garder `AGENT.md` et `CLAUDE.md` pour les règles de développement
+- **Garder** `AGENT.md` et `CLAUDE.md` pour les règles de développement
 
 ---
 
@@ -66,6 +68,64 @@ npm run dev          # Développement
 npm test             # Tests
 npm run build        # Build production
 ```
+
+---
+
+## 🎯 Ce Que Ce Template N'EST PAS
+
+Ce template **ne fournit pas** de code pré-fait:
+
+- ❌ Pas de composants UI (Button, Input, etc.)
+- ❌ Pas de hooks custom (useLocalStorage, etc.)
+- ❌ Pas de utils/helpers (validators, formatters, etc.)
+- ❌ Pas de structure folders imposée
+
+**Pourquoi ?** Parce que **ça dépend de votre projet**.
+
+---
+
+## ✅ Ce Que Ce Template FOURNIT
+
+Des **guardrails** pour que l'IA et les devs ne fassent pas n'importe quoi:
+
+### 1. **Configurations Strictes**
+
+- ✅ **TypeScript Strict Mode** - Zero tolerance pour `: any`
+- ✅ **ESLint + SonarJS** - Complexité max 15
+- ✅ **Prettier + Husky** - Auto-format au commit
+- ✅ **TDD avec Vitest** - Coverage minimum 80%
+- ✅ **Tailwind CSS v4** - Syntaxe canonique enforced
+- ✅ **Line Endings** - LF uniquement (pas de CRLF)
+
+### 2. **Documentation IA**
+
+- ✅ **AGENT.md** - Guide complet avec toutes les règles pour devs et IA
+- ✅ **CLAUDE.md** - Instructions pour Claude Code CLI
+- ✅ **FILE_TREE.md** - Arborescence auto-générée (pré-commit)
+- ✅ **CODEBASE.md** - Carte des exports auto-générée (pré-commit)
+
+### 3. **Quality Gates Automatiques**
+
+**Pre-commit hooks** (bloquent si échec):
+
+- ✅ Génération FILE_TREE.md + CODEBASE.md
+- ✅ ESLint --fix (lint + format)
+- ✅ TypeScript type-check
+- ✅ Tests sur fichiers modifiés
+
+**Pre-push hooks** (bloquent si échec):
+
+- ✅ Build TypeScript complet
+- ✅ Tous les tests
+- ✅ Vérification coverage ≥ 80%
+
+**Commit message hook**:
+
+- ✅ Format obligatoire: `type(scope): description`
+
+Résultat : **Impossible de pusher du mauvais code** 🎯
+
+---
 
 ## 📚 Documentation Automatique
 
@@ -111,6 +171,8 @@ vibecoding/
 └── package.json
 ```
 
+---
+
 ## 🛠️ Commandes Utiles
 
 ```bash
@@ -134,23 +196,7 @@ npm run test:coverage     # Avec coverage
 npm run validate          # lint + type-check + tests
 ```
 
-## 🎯 Features
-
-- ✅ **TypeScript Strict Mode** - Zero tolerance pour `: any`
-- ✅ **TDD avec Vitest** - Coverage minimum 80%
-- ✅ **ESLint + SonarJS** - Complexité max 15
-- ✅ **Prettier + Husky** - Auto-format au commit
-- ✅ **Tailwind CSS v4** - Atomic CSS
-- ✅ **Règles Unicorn** - Best practices modernes (Node.js, String methods)
-- ✅ **Pre-commit hooks** - Bloque si lint/tests/types échouent
-- ✅ **Documentation auto** - FILE_TREE.md + CODEBASE.md
-
-## 📖 Documentation Développeur
-
-- [`AGENT.md`](./AGENT.md) - **Guide complet** pour développeurs et AI agents
-- [`docs/generate-codebase-map.md`](./docs/generate-codebase-map.md) - Documentation du générateur CODEBASE.md
-- [`CODEBASE.md`](./CODEBASE.md) - Carte des exports (auto-généré)
-- [`FILE_TREE.md`](./FILE_TREE.md) - Arborescence projet (auto-généré)
+---
 
 ## 🔧 Configuration
 
@@ -159,13 +205,15 @@ npm run validate          # lint + type-check + tests
 Le projet enforce automatiquement :
 
 - **SonarJS** : Qualité de code (complexité, duplications)
-- **Unicorn** : Best practices modernes (S7772, S7773, S7781, S7785, S4138)
+- **Unicorn** : Best practices modernes (Node.js, String methods)
 - **JSDoc** : Documentation obligatoire sur exports
-- **Tailwind** : Syntaxe canonique
+- **Tailwind** : Syntaxe canonique `(--variable)` vs `[var(--variable)]`
 - **TypeScript** : No `any`, explicit return types
 - **Line Endings** : LF uniquement (pas de CRLF)
 
 Tout commit qui viole ces règles est **automatiquement bloqué**.
+
+---
 
 ## 🚨 Workflow de Développement
 
@@ -211,6 +259,8 @@ Les **pre-push hooks** exécutent :
 
 **Sois patient, ça prend ~60 secondes.**
 
+---
+
 ## 📝 Convention de Commit
 
 ```bash
@@ -227,6 +277,17 @@ git commit -m "docs: update README"
 
 **Format obligatoire** - commitlint bloquera sinon.
 
+---
+
+## 📖 Documentation Développeur
+
+- [`AGENT.md`](./AGENT.md) - **Guide complet** pour développeurs et AI agents (toutes les règles)
+- [`CLAUDE.md`](./CLAUDE.md) - Instructions pour Claude Code CLI
+- [`CODEBASE.md`](./CODEBASE.md) - Carte des exports (auto-généré)
+- [`FILE_TREE.md`](./FILE_TREE.md) - Arborescence projet (auto-généré)
+
+---
+
 ## 🎓 Apprendre Plus
 
 Lis [`AGENT.md`](./AGENT.md) pour :
@@ -236,52 +297,10 @@ Lis [`AGENT.md`](./AGENT.md) pour :
 - Exemples complets
 - Workflow TDD
 - Guide de debugging
-
----
-
-## 🗺️ Roadmap
-
-Ce template est en constante amélioration. Prochaines additions:
-
-### Phase 1 - Fondations
-
-- [ ] Structure folders (`components/`, `hooks/`, `lib/`, `types/`)
-- [ ] Path aliases TypeScript (`@/components`, `@/lib`)
-- [ ] `.env.example` pour variables d'environnement
-
-### Phase 2 - Composants UI
-
-- [ ] `Button` component (primary, secondary, danger variants)
-- [ ] `Input` component avec validation
-- [ ] `Card` container réutilisable
-- [ ] `ErrorBoundary` pour error handling
-
-### Phase 3 - Hooks & Utils
-
-- [ ] `useLocalStorage` hook
-- [ ] `useDebounce` hook
-- [ ] `lib/utils.ts` (cn, formatters, etc.)
-- [ ] `lib/validators.ts` (email, url, phone)
-
-### Phase 4 - DevEx
-
-- [ ] GitHub Actions CI/CD
-- [ ] `CONTRIBUTING.md`
-- [ ] `test-utils.tsx` avec custom render
-
-**Voir** [`CODE_REVIEW.md`](./CODE_REVIEW.md) pour l'analyse complète et les priorités.
-
----
-
-## 📦 Variantes Futures
-
-Des variantes du template seront ajoutées:
-
-- `vibecoding` - Template de base (actuel)
-- `vibecoding-router` - Avec React Router configuré
-- `vibecoding-api` - Avec API client + React Query
-- `vibecoding-full` - Full-stack avec backend Node.js
+- Tailwind v4 canonical syntax
 
 ---
 
 **Template créé avec ❤️ pour des projets maintenables et évolutifs.**
+
+**Principe:** Minimal setup + guardrails maximaux = IA qui ne fait pas n'importe quoi 🤖
