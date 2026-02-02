@@ -30,9 +30,6 @@ vibecoding/
 │   ├── commit-msg
 │   ├── pre-commit
 │   └── pre-push
-├── docs/
-│   ├── generate-codebase-map.md
-│   └── TAILWIND_CANONICAL_SYNTAX.md
 ├── public/
 │   └── vite.svg
 ├── scripts/

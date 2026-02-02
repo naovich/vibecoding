@@ -581,6 +581,54 @@ while ((match = regex.exec(text)) !== null) {
 
 **Rule:** Try Tailwind first, use custom CSS only when Tailwind can't do it.
 
+### 4. Tailwind v4 Canonical Syntax for CSS Variables
+
+**Always use the shorter canonical syntax when referencing CSS variables:**
+
+❌ **Don't use `var()` in arbitrary values:**
+
+```typescript
+<div className="bg-[var(--color-primary-500)]" />
+<div className="drop-shadow-[var(--shadow-glow)]" />
+<div className="mt-[var(--spacing-lg)]" />
+```
+
+✅ **Use the canonical syntax (no `var()`, parentheses instead of brackets):**
+
+```typescript
+<div className="bg-(--color-primary-500)" />
+<div className="drop-shadow-(--shadow-glow)" />
+<div className="mt-(--spacing-lg)" />
+```
+
+**Why?**
+
+- **Shorter** - Less characters to type
+- **More readable** - Less visual noise
+- **Canonical** - Recommended by Tailwind v4
+- **Auto-enforced** - ESLint will flag non-canonical syntax
+
+**Common patterns:**
+
+```typescript
+// Colors
+<div className="bg-(--color-brand-primary)" />
+
+// Shadows
+<div className="drop-shadow-(--shadow-glow)" />
+
+// Spacing
+<div className="mt-(--spacing-lg) p-(--spacing-md)" />
+
+// Fonts
+<div className="font-(--font-display)" />
+
+// Border radius
+<div className="rounded-(--radius-card)" />
+```
+
+Both syntaxes generate the same CSS, but `(--variable)` is the v4 standard.
+
 ---
 
 ## 🔍 Code Reusability & DRY
