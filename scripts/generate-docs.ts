@@ -118,7 +118,8 @@ function buildFileTree(dirPath: string, aiMode: boolean, modifiedFiles: Set<stri
 
   for (const item of items) {
     const fullPath = join(dirPath, item);
-    const relativePath = relative(PROJECT_ROOT, fullPath);
+    // Normalize path to use forward slashes (cross-platform)
+    const relativePath = relative(PROJECT_ROOT, fullPath).replace(/\\/g, '/');
 
     if (shouldIgnore(item, fullPath)) {
       continue;

@@ -51,8 +51,8 @@ async function generateCodebaseMap() {
         const relativePath = path.relative(rootDir, file);
         const fileInfo = parseFile(file);
         if (fileInfo) {
-          // Replace absolute path with relative path
-          fileInfo.path = relativePath;
+          // Replace absolute path with relative path (normalized to forward slashes)
+          fileInfo.path = relativePath.replace(/\\/g, '/');
         }
         return fileInfo;
       })
