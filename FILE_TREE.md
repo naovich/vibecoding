@@ -8,9 +8,6 @@
 
 ```
 vibecoding/
-├── .github/
-│   └── appmod/
-│       └── appcat/
 ├── .husky/
 │   ├── _/
 │   │   ├── .gitignore

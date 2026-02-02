@@ -1,7 +1,7 @@
 # CODEBASE.md
 
-_Auto-generated - Do not edit manually_
-_Last updated: 2026-02-02_
+*Auto-generated - Do not edit manually*
+*Last updated: 2026-02-02*
 
 ---
 
@@ -10,8 +10,7 @@ _Last updated: 2026-02-02_
 ### App.tsx
 
 **Components:**
-
-- `App` _(default export)_
+- `App` *(default export)*
   - Main application component - VibeCoding template landing page
 
 ---

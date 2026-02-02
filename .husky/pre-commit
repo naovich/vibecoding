@@ -1,16 +1,16 @@
 echo "🔍 Running pre-commit checks..."
 
-# 0. Generate documentation
-echo "📚 Generating documentation..."
-npm run docs
-git add FILE_TREE.md CODEBASE.md
-
 # 1. lint-staged (lint + format staged files)
 npx lint-staged
 
 # 2. Check TypeScript types (fast, no emit)
 echo "📘 Checking TypeScript types..."
 npm run type-check
+
+# 3. Generate documentation (LAST - after all formatting/linting)
+echo "📚 Generating documentation..."
+npm run docs
+git add FILE_TREE.md CODEBASE.md
 
 # Note: The following are now enforced by ESLint:
 # - no-explicit-any rule (replaces check-no-any.js)
