@@ -202,6 +202,7 @@ export default [
       'unicorn/number-literal-case': 'error', // Enforce proper case for numeric literals
       'unicorn/prefer-number-properties': 'error', // Prefer Number.isNaN over isNaN (sonarqube:S7773)
       'unicorn/no-for-loop': 'error', // Prefer for-of loops (sonarqube:S4138)
+      'unicorn/prefer-top-level-await': 'error', // Prefer top-level await (sonarqube:S7785)
     },
   },
   prettier,

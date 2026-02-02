@@ -1166,6 +1166,38 @@ for (const [index, item] of items.entries()) {
 
 **Why:** `for-of` is simpler, more readable, and less error-prone than traditional `for` loops with counters. Use `forEach()` or `.entries()` when you need the index.
 
+**Top-level await (ES modules):**
+
+```typescript
+// ❌ Wrapping async code in an IIFE or async function call
+async function main() {
+  const data = await fetchData();
+  console.log(data);
+}
+main();
+
+// ❌ Using .then() chains unnecessarily
+fetchData().then((data) => {
+  console.log(data);
+});
+
+// ✅ Use top-level await (ES modules)
+const data = await fetchData();
+console.log(data);
+```
+
+**Why:** Modern JavaScript (ES2022+) supports top-level `await` in ES modules. It's simpler, cleaner, and avoids unnecessary function wrappers.
+
+**Requirements:**
+
+- File must be an ES module (`"type": "module"` in package.json or `.mjs` extension)
+- Node.js 14.8+ or modern browsers
+
+**When NOT to use:**
+
+- CommonJS modules (no top-level await support)
+- Libraries that need to support older environments
+
 **Key rules enabled:**
 
 ```typescript
