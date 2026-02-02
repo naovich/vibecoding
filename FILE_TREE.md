@@ -56,6 +56,7 @@ vibecoding/
 ├── .lintstagedrc.json
 ├── .prettierignore
 ├── .prettierrc.json
+├── .tmp-ai-prompt.txt
 ├── AGENT.md
 ├── CLAUDE.md
 ├── CODEBASE.md

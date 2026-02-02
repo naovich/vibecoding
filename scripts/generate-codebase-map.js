@@ -15,6 +15,8 @@ const rootDir = path.resolve(__dirname, '..');
 const useAI = process.argv.includes('--ai');
 
 console.log('📚 Generating codebase map...');
+console.log(`🔍 DEBUG: process.argv = ${JSON.stringify(process.argv)}`);
+console.log(`🔍 DEBUG: useAI = ${useAI}`);
 if (useAI) {
   console.log('🤖 AI enrichment enabled (Claude Code will generate descriptions)');
 }
