@@ -5,7 +5,7 @@ _Last updated: 2026-02-02_
 
 ---
 
-## 📁 /home/naovich/clawd/vibecoding/src/
+## 📁 src/
 
 ### App.tsx
 

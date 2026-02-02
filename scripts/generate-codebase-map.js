@@ -49,7 +49,12 @@ async function generateCodebaseMap() {
     const fileInfos = files
       .map((file) => {
         const relativePath = path.relative(rootDir, file);
-        return parseFile(file);
+        const fileInfo = parseFile(file);
+        if (fileInfo) {
+          // Replace absolute path with relative path
+          fileInfo.path = relativePath;
+        }
+        return fileInfo;
       })
       .filter((info) => info !== null) // Remove failed parses
       .filter((info) => hasExports(info)); // Only files with exports
