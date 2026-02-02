@@ -105,16 +105,21 @@ export default [
       }],
       
       // SonarJS - Code quality rules (v3.0.6)
-      // Complexity
-      'sonarjs/cognitive-complexity': ['error', 15],
+      // Complexity (enforce small, maintainable functions)
+      'sonarjs/cognitive-complexity': ['error', 15], // Max cognitive complexity
+      'sonarjs/cyclomatic-complexity': 'error', // Max cyclomatic complexity (default: 15)
+      'sonarjs/max-lines-per-function': 'warn', // Max lines per function (default: 200)
+      'sonarjs/nested-control-flow': 'error', // Max nesting levels (default: 5)
+      'sonarjs/expression-complexity': 'warn', // Boolean expression complexity
       
       // Duplications
       'sonarjs/no-duplicate-string': 'warn',
       'sonarjs/no-identical-functions': 'error',
       
       // Simplification
-      'sonarjs/no-collapsible-if': 'warn',
-      'sonarjs/prefer-immediate-return': 'warn',
+      'sonarjs/no-collapsible-if': 'warn', // Merge nested ifs
+      'sonarjs/prefer-immediate-return': 'warn', // No useless temp variable before return
+      'sonarjs/no-inconsistent-returns': 'warn', // Consistent return usage
       
       // General best practices
       'no-console': ['warn', { allow: ['warn', 'error'] }],
