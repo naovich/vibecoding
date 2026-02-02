@@ -45,7 +45,7 @@ vibecoding/
 │   ├── generate-codebase-map.js
 │   ├── generate-docs.ts
 │   ├── generate-tree.js
-│   └── map.js
+│   └── map-ai.js
 ├── src/
 │   ├── test/
 │   │   └── setup.ts

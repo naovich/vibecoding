@@ -23,7 +23,8 @@
     "validate:full": "npm run validate && npm run test:coverage",
     "check:coverage": "node scripts/enforce-coverage.js",
     "tree": "node scripts/generate-tree.js",
-    "map": "node scripts/map.js",
+    "map": "node scripts/generate-codebase-map.js",
+    "map:ai": "node scripts/map-ai.js",
     "docs": "npm run tree && npm run map"
   },
   "keywords": [
