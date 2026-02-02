@@ -1098,6 +1098,74 @@ const result = text.replaceAll('hello', 'hi');
 
 **Why:** `replaceAll()` is more explicit about intent and safer than regex with global flag.
 
+**Number methods:**
+
+```typescript
+// ❌ Use global isNaN() (coerces values)
+isNaN('hello'); // true (unexpected coercion)
+isNaN(undefined); // true
+isNaN({}); // true
+
+// ✅ Use Number.isNaN() (no coercion, more reliable)
+Number.isNaN('hello'); // false (string is not NaN)
+Number.isNaN(NaN); // true (only NaN is NaN)
+Number.isNaN(undefined); // false
+```
+
+**Why:** `Number.isNaN()` is more predictable and doesn't perform type coercion. Same applies to `Number.isFinite()`, `Number.isInteger()`.
+
+**parseInt with radix:**
+
+```typescript
+// ❌ Missing radix parameter (can lead to unexpected results)
+const num = parseInt('08'); // Might be parsed as octal in older environments
+const hex = parseInt('0x10'); // Works but implicit
+
+// ✅ Always specify radix
+const num = parseInt('08', 10); // Explicitly base-10: 8
+const hex = parseInt('10', 16); // Explicitly base-16: 16
+const binary = parseInt('1010', 2); // Explicitly base-2: 10
+```
+
+**Why:** Without radix, `parseInt()` can misinterpret strings (e.g., leading zeros as octal). Always be explicit.
+
+**Prefer for-of loops:**
+
+```typescript
+// ❌ Traditional for loop (more verbose, error-prone)
+for (let i = 0; i < items.length; i++) {
+  const item = items[i];
+  console.log(item.name);
+}
+
+// ✅ Use for-of loop (simpler, safer)
+for (const item of items) {
+  console.log(item.name);
+}
+
+// ❌ forEach with index when you don't need it
+items.forEach((item, index) => {
+  console.log(item.name); // Not using index
+});
+
+// ✅ Use for-of
+for (const item of items) {
+  console.log(item.name);
+}
+
+// ✅ When you need the index, forEach is fine
+items.forEach((item, index) => {
+  console.log(`${index}: ${item.name}`);
+});
+
+// ✅ Or use entries()
+for (const [index, item] of items.entries()) {
+  console.log(`${index}: ${item.name}`);
+}
+```
+
+**Why:** `for-of` is simpler, more readable, and less error-prone than traditional `for` loops with counters. Use `forEach()` or `.entries()` when you need the index.
+
 **Key rules enabled:**
 
 ```typescript

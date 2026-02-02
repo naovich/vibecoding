@@ -156,6 +156,7 @@ export default [
       'curly': ['error', 'all'],
       'no-eval': 'error',
       'no-implied-eval': 'error',
+      'radix': 'error', // Require radix parameter in parseInt()
       
       // Import rules - prevent import errors and enforce best practices
       'import/no-unresolved': 'error', // Prevent broken imports
@@ -198,6 +199,9 @@ export default [
       // Unicorn rules - Modern JavaScript best practices
       'unicorn/prefer-node-protocol': 'error', // Prefer node: protocol (sonarqube:S7772)
       'unicorn/prefer-string-replace-all': 'error', // Prefer String#replaceAll() (sonarqube:S7781)
+      'unicorn/number-literal-case': 'error', // Enforce proper case for numeric literals
+      'unicorn/prefer-number-properties': 'error', // Prefer Number.isNaN over isNaN (sonarqube:S7773)
+      'unicorn/no-for-loop': 'error', // Prefer for-of loops (sonarqube:S4138)
     },
   },
   prettier,
