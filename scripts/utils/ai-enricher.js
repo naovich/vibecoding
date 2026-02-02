@@ -110,9 +110,7 @@ Respond with JSON only (no markdown code blocks):
   } catch (error) {
     // Check if Claude Code is not in PATH
     if (error.message.includes('not found') || error.message.includes('is not recognized')) {
-      throw new Error(
-        'Claude Code CLI not found in PATH. Install it or add to PATH: https://github.com/anthropics/claude-code'
-      );
+      throw new Error('Claude Code CLI not available (not in PATH)');
     }
     throw new Error(`Claude Code failed: ${error.message}`);
   }
