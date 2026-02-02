@@ -31,6 +31,7 @@ vibecoding/
 │   ├── pre-commit
 │   └── pre-push
 ├── docs/
+│   ├── generate-codebase-map.md
 │   ├── generate-docs.md
 │   └── TAILWIND_CANONICAL_SYNTAX.md
 ├── public/
@@ -43,7 +44,8 @@ vibecoding/
 │   ├── enforce-coverage.js
 │   ├── generate-codebase-map.js
 │   ├── generate-docs.ts
-│   └── generate-tree.js
+│   ├── generate-tree.js
+│   └── map.js
 ├── src/
 │   ├── test/
 │   │   └── setup.ts

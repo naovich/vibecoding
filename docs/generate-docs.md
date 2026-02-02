@@ -164,23 +164,14 @@ Les chemins sont maintenant relatifs au projet, ce qui rend la documentation :
 
 ### Commande npm
 
-Ajoutez dans `package.json` :
-
-```json
-{
-  "scripts": {
-    "docs": "npx tsx scripts/generate-docs.ts",
-    "docs:ai": "npx tsx scripts/generate-docs.ts --ai"
-  }
-}
-```
-
-Puis utilisez :
+Utilisez directement :
 
 ```bash
 npm run docs        # Mode complet
-npm run docs:ai     # Mode AI (fichiers modifiés uniquement)
+npm run docs -- --ai     # Mode AI (fichiers modifiés uniquement)
 ```
+
+**Note :** Le `--` avant `--ai` est nécessaire pour passer l'argument au script (convention npm standard).
 
 ### Hook Git (pre-commit)
 
