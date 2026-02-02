@@ -35,7 +35,11 @@ vibecoding/
 ├── public/
 │   └── vite.svg
 ├── scripts/
+│   ├── utils/
+│   │   ├── markdown-builder.js
+│   │   └── typescript-parser.js
 │   ├── enforce-coverage.js
+│   ├── generate-codebase-map.js
 │   └── generate-tree.js
 ├── src/
 │   ├── test/
@@ -51,6 +55,7 @@ vibecoding/
 ├── .prettierrc.json
 ├── AGENT.md
 ├── CLAUDE.md
+├── CODEBASE.md
 ├── commitlint.config.js
 ├── eslint.config.js
 ├── FILE_TREE.md

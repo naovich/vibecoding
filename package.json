@@ -22,7 +22,9 @@
     "validate": "npm run lint && npm run type-check && npm run test:run",
     "validate:full": "npm run validate && npm run test:coverage",
     "check:coverage": "node scripts/enforce-coverage.js",
-    "tree": "node scripts/generate-tree.js"
+    "tree": "node scripts/generate-tree.js",
+    "map": "node scripts/generate-codebase-map.js",
+    "docs": "npm run tree && npm run map"
   },
   "keywords": [
     "template",
@@ -44,6 +46,7 @@
     "@types/react-dom": "^19.2.3",
     "@typescript-eslint/eslint-plugin": "^8.54.0",
     "@typescript-eslint/parser": "^8.54.0",
+    "@typescript-eslint/typescript-estree": "^8.54.0",
     "@vitejs/plugin-react": "^5.1.2",
     "@vitest/coverage-v8": "^4.0.18",
     "autoprefixer": "^10.4.24",
