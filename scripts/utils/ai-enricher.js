@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 import { execSync } from 'node:child_process';
+import crypto from 'node:crypto';
 import fs from 'node:fs';
+import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -72,23 +74,22 @@ Respond with JSON only (no markdown code blocks):
   }
 }`;
 
+  // Fix #1: chemin unique via os.tmpdir() (évite race conditions + fichier prévisible)
+  const tmpFile = path.join(os.tmpdir(), `ai-prompt-${crypto.randomUUID()}.txt`);
+
   try {
     // Write prompt to temp file to avoid shell escaping issues
-    const tmpFile = path.join(rootDir, '.tmp-ai-prompt.txt');
     fs.writeFileSync(tmpFile, prompt, 'utf-8');
 
     // Call Claude Code CLI (assumes 'claude' is in PATH)
     const isWindows = process.platform === 'win32';
     const catCommand = isWindows ? 'type' : 'cat';
-    
+
     const result = execSync(`${catCommand} "${tmpFile}" | claude --print`, {
       encoding: 'utf-8',
       timeout: 30000,
       cwd: rootDir,
     });
-
-    // Clean up temp file
-    fs.unlinkSync(tmpFile);
 
     // Parse response - look for JSON
     const jsonMatch = result.match(/\{[\s\S]*\}/);
@@ -122,5 +123,10 @@ Respond with JSON only (no markdown code blocks):
       throw new Error('Claude Code CLI not available (not in PATH)');
     }
     throw new Error(`Claude Code failed: ${error.message}`);
+  } finally {
+    // Fix #2: nettoyage garanti même en cas d'erreur (évite la fuite de code source)
+    if (fs.existsSync(tmpFile)) {
+      fs.unlinkSync(tmpFile);
+    }
   }
 }

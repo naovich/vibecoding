@@ -11,6 +11,10 @@ if (!fs.existsSync(coverageFile)) {
 }
 
 const coverage = JSON.parse(fs.readFileSync(coverageFile, 'utf-8'));
+if (!coverage?.total) {
+  console.error('❌ Format du rapport de coverage invalide (champ "total" manquant).');
+  process.exit(1);
+}
 const total = coverage.total;
 
 const metrics = ['lines', 'statements', 'functions', 'branches'];

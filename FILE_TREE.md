@@ -1,6 +1,6 @@
 # File Tree - vibecoding
 
-> Auto-generated on 2026-02-22
+> Auto-generated on 2026-04-08
 >
 > Run `npm run tree` to regenerate this file.
 

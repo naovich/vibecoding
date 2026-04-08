@@ -228,7 +228,14 @@ Examples:
     }
 
     if (arg === '--output' || arg === '-o') {
-      options.outputPath = args[++i] || options.outputPath;
+      const rawOutput = args[++i] || options.outputPath;
+      // Fix: valider que le chemin de sortie reste dans le répertoire du projet
+      const resolved = path.resolve(options.rootPath, rawOutput);
+      if (!resolved.startsWith(options.rootPath + path.sep) && resolved !== options.rootPath) {
+        console.error(`❌ Le chemin de sortie doit être dans le répertoire du projet: ${options.rootPath}`);
+        process.exit(1);
+      }
+      options.outputPath = rawOutput;
     }
 
     if (arg === '--depth' || arg === '-d') {
