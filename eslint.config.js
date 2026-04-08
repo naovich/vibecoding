@@ -84,9 +84,30 @@ export default [
       'no-var': 'error',
     },
   },
+  // Configuration for Playwright e2e tests
+  {
+    files: ['e2e/**/*.ts'],
+    languageOptions: {
+      parser: tsparser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        project: './tsconfig.e2e.json',
+      },
+    },
+    plugins: {
+      '@typescript-eslint': tseslint,
+    },
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'error',
+      'prefer-const': 'error',
+      'no-var': 'error',
+      'no-console': 'off',
+    },
+  },
   {
     files: ['**/*.{ts,tsx}'],
-    ignores: ['scripts/**/*.ts', '*.config.ts'],  // Scripts TS use separate tsconfig
+    ignores: ['scripts/**/*.ts', '*.config.ts', 'e2e/**/*.ts'],  // Scripts TS and e2e use separate tsconfig
     settings: {
       react: {
         version: 'detect',

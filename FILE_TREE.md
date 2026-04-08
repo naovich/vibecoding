@@ -30,6 +30,8 @@ vibecoding/
 │   ├── commit-msg
 │   ├── pre-commit
 │   └── pre-push
+├── e2e/
+│   └── app.spec.ts
 ├── public/
 │   └── vite.svg
 ├── scripts/
@@ -62,9 +64,11 @@ vibecoding/
 ├── FILE_TREE.md
 ├── index.html
 ├── package.json
+├── playwright.config.ts
 ├── postcss.config.js
 ├── README.md
 ├── tailwind.config.js
+├── tsconfig.e2e.json
 ├── tsconfig.json
 ├── tsconfig.node.json
 ├── vite.config.ts

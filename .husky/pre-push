@@ -13,4 +13,8 @@ echo "📊 Checking test coverage..."
 npm run test:coverage
 node scripts/enforce-coverage.js
 
+# 4. E2E tests
+echo "🎭 Running Playwright e2e tests..."
+npm run test:e2e
+
 echo "✅ Pre-push checks passed! Ready to push."

@@ -25,7 +25,8 @@
     "tree": "node scripts/generate-tree.js",
     "map": "node scripts/generate-codebase-map.js",
     "map:ai": "cross-env AI_MODE=true node scripts/generate-codebase-map.js",
-    "docs": "npm run tree && npm run map"
+    "docs": "npm run tree && npm run map",
+    "test:e2e": "playwright test"
   },
   "keywords": [
     "template",
@@ -40,6 +41,7 @@
     "@commitlint/cli": "^20.4.0",
     "@commitlint/config-conventional": "^20.4.0",
     "@eslint/js": "^9.39.2",
+    "@playwright/test": "^1.59.1",
     "@tailwindcss/postcss": "^4.1.18",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.2",
