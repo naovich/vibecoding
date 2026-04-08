@@ -18,10 +18,10 @@ export default [
   {
     ignores: [
       'node_modules/**',
-      '*.config.ts',
-      '*.config.js',
       'dist/**',
       'coverage/**',
+      // Ne pas ignorer tous les *.config.* — les fichiers de config sont aussi
+      // soumis aux règles de sécurité (no-eval, no-new-func, etc.)
     ],
   },
   // Configuration for Node.js scripts
@@ -52,9 +52,41 @@ export default [
       'no-console': ['warn', { allow: ['warn', 'error', 'log'] }], // Allow console.log in scripts
     },
   },
+  // Configuration for TS config files (vite.config.ts, vitest.config.ts)
+  // These are Node.js context and use tsconfig.node.json
+  {
+    files: ['*.config.ts'],
+    languageOptions: {
+      parser: tsparser,
+      parserOptions: {
+        ecmaVersion: 'latest',
+        sourceType: 'module',
+        project: './tsconfig.node.json',
+      },
+      globals: {
+        console: 'readonly',
+        process: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+      },
+    },
+    plugins: {
+      '@typescript-eslint': tseslint,
+    },
+    rules: {
+      '@typescript-eslint/no-explicit-any': 'error',
+      'no-eval': 'error',
+      'no-implied-eval': 'error',
+      'no-new-func': 'error',
+      'no-script-url': 'error',
+      'no-console': ['warn', { allow: ['warn', 'error'] }],
+      'prefer-const': 'error',
+      'no-var': 'error',
+    },
+  },
   {
     files: ['**/*.{ts,tsx}'],
-    ignores: ['scripts/**/*.ts'],  // Scripts TS use separate tsconfig
+    ignores: ['scripts/**/*.ts', '*.config.ts'],  // Scripts TS use separate tsconfig
     settings: {
       react: {
         version: 'detect',
@@ -162,6 +194,8 @@ export default [
       'curly': ['error', 'all'],
       'no-eval': 'error',
       'no-implied-eval': 'error',
+      'no-new-func': 'error',       // new Function("code") est équivalent à eval
+      'no-script-url': 'error',     // javascript: URLs
       'radix': 'error', // Require radix parameter in parseInt()
       'linebreak-style': ['error', 'unix'], // Enforce LF line endings (not CRLF)
       
