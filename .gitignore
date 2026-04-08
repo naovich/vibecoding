@@ -33,8 +33,8 @@ pnpm-debug.log*
 *.sw?
 .DS_Store
 
-# Lock files (keep only one)
-package-lock.json
+# Lock files - yarn.lock ignoré si npm est utilisé
+# package-lock.json doit être committé (reproducibilité + sécurité supply chain)
 yarn.lock
 
 # Temporary files
